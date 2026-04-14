@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FuelUI : MonoBehaviour
+public class IntegrityUI : MonoBehaviour
 {
-    [SerializeField] private Slider fuelSlider;
+    [SerializeField] private Slider integritySlider;
     private void Start()
     {
         if (BoatFuel.Instance != null)
@@ -19,7 +19,7 @@ public class FuelUI : MonoBehaviour
     }
     private void UpdateFuelBar(float current, float max)
     {
-        fuelSlider.maxValue = max;
-        fuelSlider.value = current;
+        integritySlider.maxValue = max;
+        integritySlider.value = current;
     }
 }

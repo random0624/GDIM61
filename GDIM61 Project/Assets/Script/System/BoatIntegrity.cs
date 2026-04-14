@@ -32,7 +32,7 @@ public class BoatIntegrity : MonoBehaviour
     public void ConsumeIntegrity(float amount)
     {
         currentIntegrity -= amount;
-        Debug.Log("Fuel: " + currentIntegrity);
+        Debug.Log("Integrity: " + currentIntegrity);
         currentIntegrity = Mathf.Clamp(currentIntegrity, 0f, maxIntegrity);
 
         OnIntegrityChanged?.Invoke(currentIntegrity, maxIntegrity);

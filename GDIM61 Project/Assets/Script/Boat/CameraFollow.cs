@@ -7,19 +7,56 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float smoothTime = 0.35f;
 
     private Vector3 velocity = Vector3.zero;
+    private bool followActive;
+
+    void OnEnable()
+    {
+        TrySubscribeToGameStarted();
+    }
+
+    void Start()
+    {
+        TrySubscribeToGameStarted();
+    }
+
+    void OnDisable()
+    {
+        if (GameController.Instance != null)
+            GameController.Instance.OnGameStarted -= HandleGameStarted;
+    }
+
+    void TrySubscribeToGameStarted()
+    {
+        if (GameController.Instance == null)
+            return;
+
+        GameController.Instance.OnGameStarted -= HandleGameStarted;
+        GameController.Instance.OnGameStarted += HandleGameStarted;
+
+        if (GameController.Instance.IsGameStarted)
+            HandleGameStarted();
+    }
+
+    void HandleGameStarted()
+    {
+        followActive = true;
+    }
 
     void LateUpdate()
     {
-        Vector3 targetPosition = target.position + offset;
+        if (!followActive) // Checks if the game has started
+            return;
 
-        transform.position = Vector3.SmoothDamp(
+        Vector3 targetPosition = target.position + offset; // Calculates the target position
+
+        transform.position = Vector3.SmoothDamp( // Smoothly moves the camera to the target position
             transform.position,
             targetPosition,
             ref velocity,
             smoothTime
         );
 
-        // Ïà»ú²»¸ú×Å´¬×ª£¬¹Ì¶¨³¯ÏÂ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å´ï¿½×ªï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½
         transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
 }

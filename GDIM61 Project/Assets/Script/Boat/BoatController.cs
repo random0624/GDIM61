@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class BoatController : MonoBehaviour
@@ -10,15 +7,46 @@ public class BoatController : MonoBehaviour
     [SerializeField] private float deceleration = 0.5f;
     [SerializeField] private float turnSpeed = 60f;
     private float currentSpeed = 0f;
-    // Start is called before the first frame update
-    void Start()
-    {
+    private bool controlEnabled;
 
+    void OnEnable()
+    {
+        TrySubscribeToGameStarted();
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        TrySubscribeToGameStarted();
+    }
+
+    void OnDisable()
+    {
+        if (GameController.Instance != null)
+            GameController.Instance.OnGameStarted -= HandleGameStarted;
+    }
+
+    void TrySubscribeToGameStarted()
+    {
+        if (GameController.Instance == null)
+            return;
+
+        GameController.Instance.OnGameStarted -= HandleGameStarted;
+        GameController.Instance.OnGameStarted += HandleGameStarted;
+
+        if (GameController.Instance.IsGameStarted)
+            HandleGameStarted();
+    }
+
+    void HandleGameStarted()
+    {
+        controlEnabled = true;
+    }
+
     void Update()
     {
+        if (!controlEnabled)
+            return;
+
         Move();
     }
 

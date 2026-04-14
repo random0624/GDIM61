@@ -5,26 +5,57 @@ using UnityEngine;
 
 public class BoatFuel : MonoBehaviour
 {
-    [SerializeField] private float maxFuel = 100f;
-    [SerializeField] private float currentFuel = 100f;
-
-    public float MaxFuel => maxFuel;
-    public float MaxFuel => maxFuel;
-    public float CurrentFuel => currentFuel;
-    public bool HasFuel => currentFuel > 0f;
-
+    public static BoatFuel Instance { get; set; }
+    public float maxFuel = 100f;
+    public float currentFuel = 100f;
     public event Action<float, float> OnFuelChanged;
     public event Action OnFuelEmpty;
+    public event Action OnFuelFull;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        currentFuel = maxFuel;
+        OnFuelChanged?.Invoke(currentFuel, maxFuel);
+    }
+
+    public void ConsumeFuel(float amount)
+    {
+        currentFuel -= amount;
+        Debug.Log("Fuel: " + currentFuel);
+        currentFuel = Mathf.Clamp(currentFuel, 0f, maxFuel);
+
+        OnFuelChanged?.Invoke(currentFuel, maxFuel);
+
+        if (currentFuel <= 0f)
+        {
+            OnFuelEmpty?.Invoke();
+        }
+
+    }
+
+    public void AddFuel()
+    {
+
+    }
+
+    public bool HasFuel()
+    {
+        return currentFuel > 0f;
+    }
+
+    public float GetFuelPercent()
+    {
+        return currentFuel / maxFuel;
     }
 }

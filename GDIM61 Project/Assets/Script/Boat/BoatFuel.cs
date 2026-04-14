@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BoatFuel : MonoBehaviour
@@ -47,6 +45,13 @@ public class BoatFuel : MonoBehaviour
     public void AddFuel()
     {
 
+    }
+
+    public void Refill()
+    {
+        currentFuel = maxFuel;
+        OnFuelChanged?.Invoke(currentFuel, maxFuel);
+        OnFuelFull?.Invoke();
     }
 
     public bool HasFuel()

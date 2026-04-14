@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BoatIntegrity : MonoBehaviour
@@ -42,6 +40,13 @@ public class BoatIntegrity : MonoBehaviour
             OnIntegrityEmpty?.Invoke();
         }
 
+    }
+
+    public void HealIntegrity()
+    {
+        currentIntegrity = maxIntegrity;
+        OnIntegrityChanged?.Invoke(currentIntegrity, maxIntegrity);
+        OnIntegrityFull?.Invoke();
     }
 
 }

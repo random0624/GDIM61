@@ -8,6 +8,8 @@ public class BoatController : MonoBehaviour
     [SerializeField] private float turnSpeed = 60f;
     private float currentSpeed = 0f;
     private bool controlEnabled;
+    private Vector3 spawnPosition;
+    private Quaternion spawnRotation;
 
     void OnEnable()
     {
@@ -16,7 +18,21 @@ public class BoatController : MonoBehaviour
 
     void Start()
     {
+        spawnPosition = transform.position;
+        spawnRotation = transform.rotation;
         TrySubscribeToGameStarted();
+    }
+
+    public void ResetToSpawn()
+    {
+        transform.SetPositionAndRotation(spawnPosition, spawnRotation);
+        currentSpeed = 0f;
+
+        if (TryGetComponent<Rigidbody>(out var rb))
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 
     void OnDisable()

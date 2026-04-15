@@ -38,7 +38,7 @@ public class BoatController : MonoBehaviour
     void OnDisable()
     {
         if (GameController.Instance != null)
-            GameController.Instance.OnGameStarted -= HandleGameStarted;
+            GameController.Instance.OnSailStarted -= HandleGameStarted;
     }
 
     void TrySubscribeToGameStarted()
@@ -46,10 +46,10 @@ public class BoatController : MonoBehaviour
         if (GameController.Instance == null)
             return;
 
-        GameController.Instance.OnGameStarted -= HandleGameStarted;
-        GameController.Instance.OnGameStarted += HandleGameStarted;
+        GameController.Instance.OnSailStarted -= HandleGameStarted;
+        GameController.Instance.OnSailStarted += HandleGameStarted;
 
-        if (GameController.Instance.IsGameStarted)
+        if (GameController.Instance.currentState == GameController.GameState.Sailing)
             HandleGameStarted();
     }
 

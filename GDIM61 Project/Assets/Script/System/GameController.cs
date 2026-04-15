@@ -5,8 +5,16 @@ public class GameController : MonoBehaviour // Singleton class that acts as a lo
 {
     public static GameController Instance { get; private set; }
 
-    public event Action OnGameStarted;
-    public bool IsGameStarted { get; private set; }
+    public event Action OnSailStarted;
+    public enum GameState
+    {
+        MainMenu,
+        Sailing,
+        Painting
+
+       
+    }
+    public GameState currentState;
 
     void Awake()
     {
@@ -25,15 +33,20 @@ public class GameController : MonoBehaviour // Singleton class that acts as a lo
             Instance = null;
     }
 
-    void Update()
+    public void StartSail()
     {
-        if (IsGameStarted) // Checks if the game has started
+        if (currentState == GameState.Sailing)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-        {
-            IsGameStarted = true;
-            OnGameStarted?.Invoke(); // Sends the OnGameStarted event
-        }
+        currentState = GameState.Sailing;
+        OnSailStarted?.Invoke();
+    }
+    
+    public void StartPaint()
+    {
+        if (currentState == GameState.Painting)
+            return;
+        currentState = GameState.Painting;
+
     }
 }

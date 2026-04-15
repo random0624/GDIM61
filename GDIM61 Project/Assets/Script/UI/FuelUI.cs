@@ -10,7 +10,6 @@ public class FuelUI : MonoBehaviour
     {
         if (BoatFuel.Instance != null)
         {
-            // 先取消订阅防止重复订阅
             BoatFuel.Instance.OnFuelChanged -= UpdateFuelBar;
             BoatFuel.Instance.OnFuelChanged += UpdateFuelBar;
 

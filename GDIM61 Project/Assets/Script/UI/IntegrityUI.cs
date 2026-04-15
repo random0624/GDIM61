@@ -8,11 +8,10 @@ public class IntegrityUI : MonoBehaviour
     [SerializeField] private Slider integritySlider;
     private void Start()
     {
-        if (BoatFuel.Instance != null)
+        if (BoatIntegrity.Instance != null)
         {
-            // 先取消订阅防止重复订阅
-            BoatFuel.Instance.OnFuelChanged -= UpdateFuelBar;
-            BoatFuel.Instance.OnFuelChanged += UpdateFuelBar;
+            BoatIntegrity.Instance.OnIntegrityChanged -= UpdateFuelBar;
+            BoatIntegrity.Instance.OnIntegrityChanged += UpdateFuelBar;
 
             UpdateFuelBar(BoatFuel.Instance.currentFuel, BoatFuel.Instance.maxFuel);
         }

@@ -9,6 +9,15 @@ public class CameraFollow : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     private bool followActive;
 
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+
+    private void Awake()
+    {
+        startPosition = transform.position;
+        startRotation = transform.rotation;
+    }
+
     void OnEnable()
     {
         TrySubscribeToGameStarted();
@@ -32,6 +41,7 @@ public class CameraFollow : MonoBehaviour
 
         GameController.Instance.OnSailStarted -= HandleGameStarted;
         GameController.Instance.OnSailStarted += HandleGameStarted;
+        GameController.Instance.OnMainMenuStarted += ReturnToStart;
 
         if (GameController.Instance.currentState == GameController.GameState.Sailing)
             HandleGameStarted();
@@ -58,5 +68,13 @@ public class CameraFollow : MonoBehaviour
 
         // ��������Ŵ�ת���̶�����
         transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+    }
+
+    private void ReturnToStart()
+    {
+        followActive = false;
+        velocity = Vector3.zero;
+        transform.position = startPosition;
+        transform.rotation = startRotation;
     }
 }

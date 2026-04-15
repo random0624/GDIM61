@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 public class GameController : MonoBehaviour // Singleton class that acts as a locator
@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour // Singleton class that acts as a lo
     public static GameController Instance { get; private set; }
 
     public event Action OnSailStarted;
+    public event Action OnMainMenuStarted;
     public enum GameState
     {
         MainMenu,
@@ -33,6 +34,12 @@ public class GameController : MonoBehaviour // Singleton class that acts as a lo
             Instance = null;
     }
 
+    private void Update()
+    {
+        if (currentState == GameState.MainMenu)
+            OnMainMenuStarted?.Invoke();
+
+    }
     public void StartSail()
     {
         if (currentState == GameState.Sailing)

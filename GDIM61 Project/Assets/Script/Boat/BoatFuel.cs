@@ -42,11 +42,6 @@ public class BoatFuel : MonoBehaviour
 
     }
 
-    public void AddFuel()
-    {
-
-    }
-
     public void Refill()
     {
         currentFuel = maxFuel;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Jobs;
 
 public class BoatController : MonoBehaviour
 {
@@ -6,11 +7,12 @@ public class BoatController : MonoBehaviour
     [SerializeField] private float acceleration = 0.5f;
     [SerializeField] private float deceleration = 0.5f;
     [SerializeField] private float turnSpeed = 60f;
-    private float currentSpeed = 0f;
+    public float currentSpeed = 0f;
     private bool controlEnabled;
     private Vector3 spawnPosition;
     private Quaternion spawnRotation;
 
+    [SerializeField] private float damageMultiplier = 3f;
     void OnEnable()
     {
         TrySubscribeToGameStarted();
@@ -23,16 +25,11 @@ public class BoatController : MonoBehaviour
         TrySubscribeToGameStarted();
     }
 
-    public void ResetToSpawn()
+     void ResetToSpawn()
     {
-        transform.SetPositionAndRotation(spawnPosition, spawnRotation);
+        transform.position = spawnPosition;
+        transform.rotation = spawnRotation;
         currentSpeed = 0f;
-
-        if (TryGetComponent<Rigidbody>(out var rb))
-        {
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-        }
     }
 
     void OnDisable()
@@ -48,6 +45,7 @@ public class BoatController : MonoBehaviour
 
         GameController.Instance.OnSailStarted -= HandleGameStarted;
         GameController.Instance.OnSailStarted += HandleGameStarted;
+        GameController.Instance.OnMainMenuStarted += ResetToSpawn;
 
         if (GameController.Instance.currentState == GameController.GameState.Sailing)
             HandleGameStarted();
@@ -68,6 +66,8 @@ public class BoatController : MonoBehaviour
 
     private void Move()
     {
+        if (GameController.Instance.currentState != GameController.GameState.Sailing)
+            return;
         float moveInput = Input.GetAxisRaw("Vertical");     // W/S
         float turnInput = Input.GetAxisRaw("Horizontal");   // A/D
         if (moveInput > 0)
@@ -100,6 +100,32 @@ public class BoatController : MonoBehaviour
         if (Mathf.Abs(currentSpeed) > 0.1f)
         {
             transform.Rotate(0f, turnInput * turnSpeed * Time.deltaTime, 0f);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Island"))
+        {
+            float impactForce =currentSpeed ;
+            float damage = impactForce * damageMultiplier;
+
+
+            if (BoatIntegrity.Instance != null)
+            {
+                BoatIntegrity.Instance.ConsumeIntegrity(damage);
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("HomePoint"))
+        {
+            GameController.Instance.currentState = GameController.GameState.MainMenu;
+            BoatFuel.Instance.Refill();
+            BoatIntegrity.Instance.HealIntegrity();
+
         }
     }
 }

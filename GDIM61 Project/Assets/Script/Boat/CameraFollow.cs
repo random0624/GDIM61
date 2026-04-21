@@ -66,7 +66,6 @@ public class CameraFollow : MonoBehaviour
             smoothTime
         );
 
-        // ��������Ŵ�ת���̶�����
         transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
 

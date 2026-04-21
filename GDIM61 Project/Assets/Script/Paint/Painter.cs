@@ -11,6 +11,7 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler
     public Color brushColor = Color.black; 
 
     public RawImage _rawImage;
+    public RawImage miniMapRawImage;
     private Texture2D _drawableTexture;
     public RectTransform _rectTransform;
     public void OnPointerDown(PointerEventData eventData) => Draw(eventData);
@@ -25,6 +26,10 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler
         _drawableTexture.Apply();
 
         _rawImage.texture = _drawableTexture;
+        if (miniMapRawImage != null)
+        {
+            miniMapRawImage.texture = _drawableTexture;
+        }
     }
 
     private void Draw(PointerEventData eventData)

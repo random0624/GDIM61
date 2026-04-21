@@ -1,23 +1,26 @@
 ﻿using System;
 using UnityEngine;
 
-public class GameController : MonoBehaviour // Singleton class that acts as a locator
+public class GameController : MonoBehaviour
 {
     public static GameController Instance { get; private set; }
 
     public event Action OnSailStarted;
     public event Action OnMainMenuStarted;
+    public event Action OnPaintStarted;
+    public event Action<GameState> OnStateChanged;
+
     public enum GameState
     {
         MainMenu,
         Sailing,
         Painting
-
-       
     }
-    public GameState currentState;
 
-    void Awake()
+    [SerializeField] public  GameState currentState = GameState.MainMenu;
+    public GameState CurrentState => currentState;
+
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -28,32 +31,58 @@ public class GameController : MonoBehaviour // Singleton class that acts as a lo
         Instance = this;
     }
 
-    void OnDestroy()
+    private void Start()
+    {
+        EnterState(currentState);
+    }
+
+    private void OnDestroy()
     {
         if (Instance == this)
             Instance = null;
     }
 
-    private void Update()
-    {
-        if (currentState == GameState.MainMenu)
-            OnMainMenuStarted?.Invoke();
-
-    }
     public void StartSail()
     {
-        if (currentState == GameState.Sailing)
-            return;
-
-        currentState = GameState.Sailing;
-        OnSailStarted?.Invoke();
+        ChangeState(GameState.Sailing);
     }
-    
+
     public void StartPaint()
     {
-        if (currentState == GameState.Painting)
-            return;
-        currentState = GameState.Painting;
+        ChangeState(GameState.Painting);
+    }
 
+    public void StartMainMenu()
+    {
+        ChangeState(GameState.MainMenu);
+    }
+
+    public void ChangeState(GameState newState)
+    {
+        if (currentState == newState)
+            return;
+
+        currentState = newState;
+        EnterState(newState);
+    }
+
+    public void EnterState(GameState state)
+    {
+        OnStateChanged?.Invoke(state);
+
+        switch (state)
+        {
+            case GameState.MainMenu:
+                OnMainMenuStarted?.Invoke();
+                break;
+
+            case GameState.Sailing:
+                OnSailStarted?.Invoke();
+                break;
+
+            case GameState.Painting:
+                OnPaintStarted?.Invoke();
+                break;
+        }
     }
 }

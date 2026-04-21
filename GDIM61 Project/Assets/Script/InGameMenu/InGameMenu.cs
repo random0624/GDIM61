@@ -28,16 +28,12 @@ public class InGameMenu : MonoBehaviour
 
     private void OnSailButtonClicked()
     {
-        sailButton.gameObject.SetActive(false);
-        paintButton.gameObject.SetActive(false);
-        quitButton.gameObject.SetActive(false);
+        MainMenuHide();
         GameController.Instance.StartSail();
     }
     private void OnPaintButtonClicked()
     {
-        sailButton.gameObject.SetActive(false);
-        paintButton.gameObject.SetActive(false);
-        quitButton.gameObject.SetActive(false);
+        MainMenuHide();
         GameController.Instance.StartPaint();
         DrawingCanvas.gameObject.SetActive(true);
         closeCanvasButton.gameObject.SetActive(true);
@@ -56,6 +52,12 @@ public class InGameMenu : MonoBehaviour
         closeCanvasButton.gameObject.SetActive(false);
 
      }
+    private void MainMenuHide()
+    {
+        sailButton.gameObject.SetActive(false);
+        paintButton.gameObject.SetActive(false);
+        quitButton.gameObject.SetActive(false);
+    }
 
     private void OnCloseCanvasButtonClicked()
     {

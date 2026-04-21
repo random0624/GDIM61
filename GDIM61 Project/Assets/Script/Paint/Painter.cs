@@ -10,6 +10,7 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
     public Color brushColor = Color.black;
 
     public RawImage _rawImage;
+    public RawImage miniMapRawImage;
     private Texture2D _drawableTexture;
     private Color32[] _pixelBuffer;
     private bool _textureDirty;
@@ -38,6 +39,10 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
         _drawableTexture.Apply();
 
         _rawImage.texture = _drawableTexture;
+        if (miniMapRawImage != null)
+        {
+            miniMapRawImage.texture = _drawableTexture;
+        }
     }
 
     void LateUpdate()

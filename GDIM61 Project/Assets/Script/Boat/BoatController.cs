@@ -11,6 +11,7 @@ public class BoatController : MonoBehaviour
     private bool controlEnabled;
     private Vector3 spawnPosition;
     private Quaternion spawnRotation;
+    [SerializeField] private GameObject successPanel;
 
 
     [Header("Sailthings")]
@@ -198,6 +199,11 @@ public class BoatController : MonoBehaviour
             GameController.Instance.ChangeState(GameController.GameState.MainMenu);
             BoatFuel.Instance.Refill();
             BoatIntegrity.Instance.HealIntegrity();
+            if (CollectibleManager.Instance != null && CollectibleManager.Instance.IsAllCollected)
+            {
+                successPanel.SetActive(true);
+                Time.timeScale = 0f;
+            }
 
         }
 

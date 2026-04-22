@@ -6,9 +6,17 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private bool autoFindBoat = true;
     [SerializeField] private Vector3 offset = new Vector3(0f, 30f, 0f);
     [SerializeField] private float smoothTime = 0.35f;
+    [Header("Sail Transition")]
+    [SerializeField] private float sailTransitionDuration = 1.5f;
+    [SerializeField] private Vector3 sailViewEuler = new Vector3(90f, 0f, 0f);
+    [SerializeField] private AnimationCurve sailTransitionCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
     private Vector3 velocity = Vector3.zero;
     private bool followActive;
+    private bool isTransitioning;
+    private float transitionTimer;
+    private Vector3 transitionStartPosition;
+    private Quaternion transitionStartRotation;
 
     private Vector3 startPosition;
     private Quaternion startRotation;
@@ -51,20 +59,35 @@ public class CameraFollow : MonoBehaviour
 
     void HandleGameStarted()
     {
-        followActive = true;
+        TryFindTarget();
+        if (target == null)
+            return;
+
+        transitionStartPosition = transform.position;
+        transitionStartRotation = transform.rotation;
+        transitionTimer = 0f;
+        isTransitioning = true;
+        followActive = false;
+        velocity = Vector3.zero;
     }
 
     void LateUpdate()
     {
-        if (!followActive) // Checks if the game has started
-            return;
-
         if (target == null)
         {
             TryFindTarget();
-            if (target == null)
+            if (target == null && (followActive || isTransitioning))
                 return;
         }
+
+        if (isTransitioning)
+        {
+            UpdateSailTransition();
+            return;
+        }
+
+        if (!followActive) // Checks if the game has started
+            return;
 
         Vector3 targetPosition = target.position + offset; // Calculates the target position
 
@@ -75,12 +98,14 @@ public class CameraFollow : MonoBehaviour
             smoothTime
         );
 
-        transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+        transform.rotation = Quaternion.Euler(sailViewEuler);
     }
 
     private void ReturnToStart()
     {
         followActive = false;
+        isTransitioning = false;
+        transitionTimer = 0f;
         velocity = Vector3.zero;
         transform.position = startPosition;
         transform.rotation = startRotation;
@@ -95,6 +120,32 @@ public class CameraFollow : MonoBehaviour
         if (boatController != null)
         {
             target = boatController.transform;
+        }
+    }
+
+    private void UpdateSailTransition()
+    {
+        if (target == null)
+        {
+            isTransitioning = false;
+            return;
+        }
+
+        transitionTimer += Time.deltaTime;
+        float duration = Mathf.Max(0.01f, sailTransitionDuration);
+        float progress = Mathf.Clamp01(transitionTimer / duration);
+        float curvedProgress = sailTransitionCurve.Evaluate(progress);
+
+        Vector3 targetPosition = target.position + offset;
+        Quaternion targetRotation = Quaternion.Euler(sailViewEuler);
+
+        transform.position = Vector3.Lerp(transitionStartPosition, targetPosition, curvedProgress);
+        transform.rotation = Quaternion.Slerp(transitionStartRotation, targetRotation, curvedProgress);
+
+        if (progress >= 1f)
+        {
+            isTransitioning = false;
+            followActive = true;
         }
     }
 }

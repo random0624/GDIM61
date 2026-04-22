@@ -725,6 +725,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxIntegrity: 100
   currentIntegrity: 100
+--- !u!1 &191014338 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -6689036041284674117, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+  m_PrefabInstance: {fileID: 908741367}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &191014339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191014338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a93bc854adb24b868eb161956b32f83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  autoFindBoat: 1
+  detectionRadius: 15
+  alertDuration: 2
+  alertIcon: {fileID: 0}
+  moveSpeed: 3
+  rotationSpeed: 4
+  chaseDuration: 8
+  catchDistance: 1
+  catchDamage: 20
+  returnStopDistance: 0.5
 --- !u!1 &289990311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,7 +1346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   windDirectionSource: {fileID: 515068181}
-  windStrength: 3
+  windStrength: 0.5
 --- !u!65 &515068184
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2371,6 +2399,69 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
+--- !u!1001 &908741367
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -6689036041284674117, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      propertyPath: m_Name
+      value: low_poly_shark
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -20.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.41422322
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.41406077
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.573551
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.57272345
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -89.937
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 108.247
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 191014339}
+    - targetCorrespondingSourceObject: {fileID: -2722822783677623751, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1046601745}
+  m_SourcePrefab: {fileID: -5645937942226959685, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
 --- !u!1 &1043554820
 GameObject:
   m_ObjectHideFlags: 0
@@ -2476,6 +2567,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1046601743 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2722822783677623751, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+  m_PrefabInstance: {fileID: 908741367}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1046601745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046601743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2be1f6cdb379a401f93f1dbea146a186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSource: {fileID: 0}
+  idleBobHeight: 0.08
+  idleBobSpeed: 1.5
+  idleSwayAngle: 6
+  idleSwaySpeed: 2
+  swimBobHeight: 0.14
+  swimBobSpeed: 3
+  swimSwayAngle: 14
+  swimSwaySpeed: 5
+  speedForFullSwim: 8
+  animationBlendSpeed: 4
 --- !u!1 &1101000831
 GameObject:
   m_ObjectHideFlags: 0
@@ -3738,3 +3857,4 @@ SceneRoots:
   - {fileID: 1043554824}
   - {fileID: 41202639}
   - {fileID: 810684}
+  - {fileID: 908741367}

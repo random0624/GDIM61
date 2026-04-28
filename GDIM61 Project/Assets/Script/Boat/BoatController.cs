@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Jobs;
 
 public class BoatController : MonoBehaviour
 {
@@ -26,6 +25,10 @@ public class BoatController : MonoBehaviour
     private WindZoneArea currentWindZone;
 
     [SerializeField] private float damageMultiplier = 3f;
+    [SerializeField] private float minIslandCollisionDamage = 5f;
+    [SerializeField] private float islandDamageCooldown = 0.45f;
+    private float lastIslandDamageTime = -999f;
+
     void OnEnable()
     {
         TrySubscribeToGameStarted();
@@ -35,6 +38,11 @@ public class BoatController : MonoBehaviour
     {
         spawnPosition = transform.position;
         spawnRotation = transform.rotation;
+
+        if (GetComponent<BoatHitFeedback>() == null)
+        {
+            gameObject.AddComponent<BoatHitFeedback>();
+        }
     }
 
     private void Start()
@@ -179,21 +187,37 @@ public class BoatController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Island"))
+        if (IsIslandObject(collision.transform))
         {
-            float impactForce =currentSpeed ;
-            float damage = impactForce * damageMultiplier;
+            DamageBoatFromIsland();
+        }
+    }
 
+    private void DamageBoatFromIsland()
+    {
+        if (Time.time - lastIslandDamageTime < islandDamageCooldown)
+        {
+            return;
+        }
 
-            if (BoatIntegrity.Instance != null)
-            {
-                BoatIntegrity.Instance.ConsumeIntegrity(damage);
-            }
+        float impactForce = Mathf.Abs(currentSpeed);
+        float damage = Mathf.Max(impactForce * damageMultiplier, minIslandCollisionDamage);
+
+        if (BoatIntegrity.Instance != null && damage > 0f)
+        {
+            lastIslandDamageTime = Time.time;
+            BoatIntegrity.Instance.ConsumeIntegrity(damage);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (IsIslandObject(other.transform))
+        {
+            DamageBoatFromIsland();
+            return;
+        }
+
         if (other.gameObject.CompareTag("HomePoint"))
         {
             GameController.Instance.ChangeState(GameController.GameState.MainMenu);
@@ -225,5 +249,20 @@ public class BoatController : MonoBehaviour
             currentWindDirection = Vector3.zero;
             currentWindStrength = 0f;
         }
+    }
+
+    private bool IsIslandObject(Transform hitTransform)
+    {
+        while (hitTransform != null)
+        {
+            if (hitTransform.CompareTag("Island"))
+            {
+                return true;
+            }
+
+            hitTransform = hitTransform.parent;
+        }
+
+        return false;
     }
 }

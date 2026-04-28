@@ -29,11 +29,18 @@ public class BoatIntegrity : MonoBehaviour
 
     public void ConsumeIntegrity(float amount)
     {
+        if (amount <= 0f)
+        {
+            return;
+        }
+
         currentIntegrity -= amount;
         Debug.Log("Integrity: " + currentIntegrity);
         currentIntegrity = Mathf.Clamp(currentIntegrity, 0f, maxIntegrity);
 
         OnIntegrityChanged?.Invoke(currentIntegrity, maxIntegrity);
+        BoatHitFeedback.PlayOnBoatDamage();
+        CameraFollow.PlayHitShakeOnCamera();
 
         if (currentIntegrity <= 0f)
         {

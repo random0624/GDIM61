@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,9 +9,9 @@ public class FuelUI : MonoBehaviour
     [SerializeField] private float lowPulseScale = 1.05f;
     [SerializeField] private float lowPulseSpeed = 4f;
 
-    private Coroutine smoothRoutine;
     private Vector3 originalScale = Vector3.one;
     private bool hasInitializedSlider;
+    private float targetFuelValue;
 
     private void Awake()
     {
@@ -50,12 +49,6 @@ public class FuelUI : MonoBehaviour
             BoatFuel.Instance.OnFuelChanged -= UpdateFuelBar;
         }
 
-        if (smoothRoutine != null)
-        {
-            StopCoroutine(smoothRoutine);
-            smoothRoutine = null;
-        }
-
         transform.localScale = originalScale;
     }
 
@@ -64,6 +57,16 @@ public class FuelUI : MonoBehaviour
         if (fuelSlider == null || fuelSlider.maxValue <= 0f)
         {
             return;
+        }
+
+        if (hasInitializedSlider)
+        {
+            float duration = Mathf.Max(0.01f, smoothDuration);
+            fuelSlider.value = Mathf.MoveTowards(
+                fuelSlider.value,
+                targetFuelValue,
+                fuelSlider.maxValue * Time.deltaTime / duration
+            );
         }
 
         float fuelPercent = fuelSlider.value / fuelSlider.maxValue;
@@ -90,34 +93,11 @@ public class FuelUI : MonoBehaviour
         if (!hasInitializedSlider)
         {
             fuelSlider.value = current;
+            targetFuelValue = current;
             hasInitializedSlider = true;
             return;
         }
 
-        if (smoothRoutine != null)
-        {
-            StopCoroutine(smoothRoutine);
-        }
-
-        smoothRoutine = StartCoroutine(SmoothSliderRoutine(current));
-    }
-
-    private IEnumerator SmoothSliderRoutine(float targetValue)
-    {
-        float startValue = fuelSlider.value;
-        float elapsed = 0f;
-        float duration = Mathf.Max(0.01f, smoothDuration);
-
-        while (elapsed < duration)
-        {
-            float progress = Mathf.Clamp01(elapsed / duration);
-            fuelSlider.value = Mathf.Lerp(startValue, targetValue, progress);
-
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        fuelSlider.value = targetValue;
-        smoothRoutine = null;
+        targetFuelValue = current;
     }
 }

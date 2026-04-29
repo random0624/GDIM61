@@ -2649,15 +2649,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSource: {fileID: 0}
-  idleBobHeight: 0.08
+  idleBobHeight: 0.18
   idleBobSpeed: 1.5
-  idleSwayAngle: 6
+  idleSwayAngle: 9
+  idleRollAngle: 4
   idleSwaySpeed: 2
-  swimBobHeight: 0.14
+  swimBobHeight: 0.32
   swimBobSpeed: 3
-  swimSwayAngle: 14
+  swimSwayAngle: 28
+  swimRollAngle: 10
+  swimPitchAngle: 5
   swimSwaySpeed: 5
-  speedForFullSwim: 8
+  speedForFullSwim: 3
   animationBlendSpeed: 4
 --- !u!1 &1101000831
 GameObject:

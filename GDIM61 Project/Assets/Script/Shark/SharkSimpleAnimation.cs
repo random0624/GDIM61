@@ -6,17 +6,20 @@ public class SharkSimpleAnimation : MonoBehaviour
     [SerializeField] private Transform movementSource;
 
     [Header("Idle Motion")]
-    [SerializeField] private float idleBobHeight = 0.08f;
+    [SerializeField] private float idleBobHeight = 0.18f;
     [SerializeField] private float idleBobSpeed = 1.5f;
-    [SerializeField] private float idleSwayAngle = 6f;
+    [SerializeField] private float idleSwayAngle = 9f;
+    [SerializeField] private float idleRollAngle = 4f;
     [SerializeField] private float idleSwaySpeed = 2f;
 
     [Header("Swim Motion")]
-    [SerializeField] private float swimBobHeight = 0.14f;
+    [SerializeField] private float swimBobHeight = 0.32f;
     [SerializeField] private float swimBobSpeed = 3f;
-    [SerializeField] private float swimSwayAngle = 14f;
+    [SerializeField] private float swimSwayAngle = 28f;
+    [SerializeField] private float swimRollAngle = 10f;
+    [SerializeField] private float swimPitchAngle = 5f;
     [SerializeField] private float swimSwaySpeed = 5f;
-    [SerializeField] private float speedForFullSwim = 8f;
+    [SerializeField] private float speedForFullSwim = 3f;
     [SerializeField] private float animationBlendSpeed = 4f;
 
     private Vector3 initialLocalPosition;
@@ -52,12 +55,16 @@ public class SharkSimpleAnimation : MonoBehaviour
         float bobHeight = Mathf.Lerp(idleBobHeight, swimBobHeight, swimBlend);
         float bobSpeed = Mathf.Lerp(idleBobSpeed, swimBobSpeed, swimBlend);
         float swayAngle = Mathf.Lerp(idleSwayAngle, swimSwayAngle, swimBlend);
+        float rollAngle = Mathf.Lerp(idleRollAngle, swimRollAngle, swimBlend);
+        float pitchAngle = Mathf.Lerp(0f, swimPitchAngle, swimBlend);
         float swaySpeed = Mathf.Lerp(idleSwaySpeed, swimSwaySpeed, swimBlend);
 
         float bobOffset = Mathf.Sin(Time.time * bobSpeed) * bobHeight;
         float swayOffset = Mathf.Sin(Time.time * swaySpeed) * swayAngle;
+        float rollOffset = Mathf.Sin((Time.time * swaySpeed) + Mathf.PI * 0.5f) * rollAngle;
+        float pitchOffset = Mathf.Sin((Time.time * bobSpeed) + Mathf.PI * 0.5f) * pitchAngle;
 
         transform.localPosition = initialLocalPosition + new Vector3(0f, bobOffset, 0f);
-        transform.localRotation = initialLocalRotation * Quaternion.Euler(0f, swayOffset, 0f);
+        transform.localRotation = initialLocalRotation * Quaternion.Euler(pitchOffset, swayOffset, rollOffset);
     }
 }

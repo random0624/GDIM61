@@ -27,7 +27,10 @@ public class BoatController : MonoBehaviour
     [SerializeField] private float damageMultiplier = 3f;
     [SerializeField] private float minIslandCollisionDamage = 5f;
     [SerializeField] private float islandDamageCooldown = 0.45f;
+    [SerializeField] private Vector3 islandHitCheckHalfExtents = new Vector3(0.75f, 4f, 0.95f);
     private float lastIslandDamageTime = -999f;
+    private bool wasTouchingIsland;
+    private readonly Collider[] islandHitResults = new Collider[12];
 
     void OnEnable()
     {
@@ -55,6 +58,7 @@ public class BoatController : MonoBehaviour
         transform.position = spawnPosition;
         transform.rotation = spawnRotation;
         currentSpeed = 0f;
+        wasTouchingIsland = false;
     }
 
     void OnDisable()
@@ -137,6 +141,8 @@ public class BoatController : MonoBehaviour
         {
             transform.Rotate(0f, turnInput * turnSpeed * Time.deltaTime, 0f);
         }
+
+        CheckIslandHit();
     }
 
     private void SailRotation()
@@ -208,6 +214,42 @@ public class BoatController : MonoBehaviour
             lastIslandDamageTime = Time.time;
             BoatIntegrity.Instance.ConsumeIntegrity(damage);
         }
+    }
+
+    private void CheckIslandHit()
+    {
+        int hitCount = Physics.OverlapBoxNonAlloc(
+            transform.position,
+            islandHitCheckHalfExtents,
+            islandHitResults,
+            transform.rotation,
+            Physics.DefaultRaycastLayers,
+            QueryTriggerInteraction.Collide
+        );
+
+        bool isTouchingIsland = false;
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            Collider hit = islandHitResults[i];
+            if (hit == null || hit.GetComponentInParent<BoatController>() == this)
+            {
+                continue;
+            }
+
+            if (IsIslandObject(hit.transform))
+            {
+                isTouchingIsland = true;
+                break;
+            }
+        }
+
+        if (isTouchingIsland && !wasTouchingIsland)
+        {
+            DamageBoatFromIsland();
+        }
+
+        wasTouchingIsland = isTouchingIsland;
     }
 
     private void OnTriggerEnter(Collider other)

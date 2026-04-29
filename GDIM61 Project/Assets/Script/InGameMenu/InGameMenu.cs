@@ -10,6 +10,8 @@ public class InGameMenu : MonoBehaviour
     public RawImage DrawingCanvas;
 
     private bool isPainting;
+    //Checks if the player opened the paint menu from the main menu
+    private bool openedFromMainMenuPaint;
 
     private void Start()
     {
@@ -56,11 +58,13 @@ public class InGameMenu : MonoBehaviour
     }
     private void OnSailButtonClicked()
     {
+        openedFromMainMenuPaint = false;
         MainMenuHide();
         GameController.Instance.StartSail();
     }
     private void OnPaintButtonClicked()
     {
+        openedFromMainMenuPaint = true;
         MainMenuHide();
         GameController.Instance.StartPaint();
         DrawingCanvas.gameObject.SetActive(true);
@@ -89,7 +93,27 @@ public class InGameMenu : MonoBehaviour
 
     private void OnCloseCanvasButtonClicked()
     {
-        MainMenuDisplay();
+        DrawingCanvas.gameObject.SetActive(false);
+        closeCanvasButton.gameObject.SetActive(false);
+
+        if (openedFromMainMenuPaint)
+        {
+            MainMenuDisplay();
+            if (GameController.Instance != null)
+            {
+                GameController.Instance.StartMainMenu();
+            }
+        }
+        else
+        {
+            MainMenuHide();
+            if (GameController.Instance != null)
+            {
+                GameController.Instance.StartSail();
+            }
+        }
+
+        openedFromMainMenuPaint = false;
     }
 
     private void AddFloatEffect(Button button)

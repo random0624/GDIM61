@@ -60,7 +60,6 @@ public class CollectUI : MonoBehaviour
 
     private void UpdateUI(int current, int total)
     {
-<<<<<<< Updated upstream
         if (collectText == null)
         {
             return;
@@ -104,8 +103,5 @@ public class CollectUI : MonoBehaviour
 
         collectText.transform.localScale = originalScale;
         popRoutine = null;
-=======
-        collectText.text = "Quest: Collect Treasure Chest: " +current + "/" + total;
->>>>>>> Stashed changes
     }
 }

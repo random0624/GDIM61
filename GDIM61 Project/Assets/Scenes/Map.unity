@@ -6871,7 +6871,7 @@ MonoBehaviour:
   hoverSound: {fileID: 0}
   mainMenuBGM: {fileID: 8300000, guid: 15ab603b1211a442c8dc2a9d40934ee8, type: 3}
   sailingBGM: {fileID: 0}
-  sourceMainMenu: {fileID: 1073650083}
+  sourceMainMenu: {fileID: 0}
   sourceSailing: {fileID: 0}
 --- !u!82 &1073650083
 AudioSource:
@@ -6885,7 +6885,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 15ab603b1211a442c8dc2a9d40934ee8, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0

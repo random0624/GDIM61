@@ -5,31 +5,35 @@ using UnityEngine;
 public class CollectUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI collectText;
-    [SerializeField] private float collectPopScale = 1.22f;
-    [SerializeField] private float collectPopDuration = 0.18f;
+    [SerializeField] private float collectPopScale = 1.55f;
+    [SerializeField] private float collectPopDuration = 0.32f;
+    [SerializeField] private Color collectPopColor = new Color(1f, 0.86f, 0.28f, 1f);
+    [SerializeField] private float collectPopLift = 18f;
 
     private Coroutine popRoutine;
     private Vector3 originalScale = Vector3.one;
+    private Vector3 originalLocalPosition;
+    private Color originalColor = Color.white;
     private int lastCurrent = -1;
+    private bool isSubscribed;
 
     private void Awake()
     {
-        if (collectText != null)
-        {
-            originalScale = collectText.transform.localScale;
-        }
+        EnsureCollectText();
+        CacheOriginalState();
     }
 
     private void OnEnable()
     {
-        if (CollectibleManager.Instance != null)
-        {
-            CollectibleManager.Instance.OnCollectChanged += UpdateUI;
-        }
+        TrySubscribe();
     }
 
     private void Start()
     {
+        EnsureCollectText();
+        CacheOriginalState();
+        TrySubscribe();
+
         if (CollectibleManager.Instance != null)
         {
             UpdateUI(
@@ -41,10 +45,11 @@ public class CollectUI : MonoBehaviour
 
     private void OnDisable()
     {
-        if (CollectibleManager.Instance != null)
+        if (CollectibleManager.Instance != null && isSubscribed)
         {
             CollectibleManager.Instance.OnCollectChanged -= UpdateUI;
         }
+        isSubscribed = false;
 
         if (popRoutine != null)
         {
@@ -55,11 +60,15 @@ public class CollectUI : MonoBehaviour
         if (collectText != null)
         {
             collectText.transform.localScale = originalScale;
+            collectText.transform.localPosition = originalLocalPosition;
+            collectText.color = originalColor;
         }
     }
 
     private void UpdateUI(int current, int total)
     {
+        EnsureCollectText();
+
         if (collectText == null)
         {
             return;
@@ -95,13 +104,72 @@ public class CollectUI : MonoBehaviour
         {
             float progress = Mathf.Clamp01(elapsed / duration);
             float pop = Mathf.Sin(progress * Mathf.PI);
+            float lift = Mathf.Sin(progress * Mathf.PI) * collectPopLift;
             collectText.transform.localScale = Vector3.Lerp(originalScale, targetScale, pop);
+            collectText.transform.localPosition = originalLocalPosition + new Vector3(0f, lift, 0f);
+            collectText.color = Color.Lerp(originalColor, collectPopColor, pop);
 
             elapsed += Time.deltaTime;
             yield return null;
         }
 
         collectText.transform.localScale = originalScale;
+        collectText.transform.localPosition = originalLocalPosition;
+        collectText.color = originalColor;
         popRoutine = null;
+    }
+
+    private void TrySubscribe()
+    {
+        if (CollectibleManager.Instance == null || isSubscribed)
+        {
+            return;
+        }
+
+        CollectibleManager.Instance.OnCollectChanged -= UpdateUI;
+        CollectibleManager.Instance.OnCollectChanged += UpdateUI;
+        isSubscribed = true;
+    }
+
+    private void EnsureCollectText()
+    {
+        if (collectText != null)
+        {
+            return;
+        }
+
+        collectText = GetComponentInChildren<TextMeshProUGUI>(true);
+        if (collectText != null)
+        {
+            return;
+        }
+
+        GameObject textObject = new GameObject("CollectText");
+        textObject.transform.SetParent(transform, false);
+
+        RectTransform rectTransform = textObject.AddComponent<RectTransform>();
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+        rectTransform.offsetMin = Vector2.zero;
+        rectTransform.offsetMax = Vector2.zero;
+
+        collectText = textObject.AddComponent<TextMeshProUGUI>();
+        collectText.alignment = TextAlignmentOptions.Center;
+        collectText.fontSize = 42f;
+        collectText.fontStyle = FontStyles.Bold;
+        collectText.color = Color.white;
+        collectText.raycastTarget = false;
+    }
+
+    private void CacheOriginalState()
+    {
+        if (collectText == null)
+        {
+            return;
+        }
+
+        originalScale = collectText.transform.localScale;
+        originalLocalPosition = collectText.transform.localPosition;
+        originalColor = collectText.color;
     }
 }

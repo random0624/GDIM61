@@ -9109,8 +9109,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectText: {fileID: 0}
-  collectPopScale: 1.22
-  collectPopDuration: 0.18
+  collectPopScale: 1.55
+  collectPopDuration: 0.32
+  collectPopColor: {r: 1, g: 0.86, b: 0.28, a: 1}
+  collectPopLift: 18
 --- !u!1 &1663216048
 GameObject:
   m_ObjectHideFlags: 0

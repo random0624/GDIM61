@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac979cd0abf14efd8ace0b8b5001211, type: 3}
   m_Name: TestQuest
   m_EditorClassIdentifier: 
-  questID: 
-  questName: 
-  questDescription: 
-  objectives: []
+  questID: T25bc0897-e2ef-4939-925c-ea90c7e6449d
+  questName: Test
+  questDescription: Collect Treasure Chests
+  objectives:
+  - objectiveID: 1
+    description: Collect Treasure Chests
+    type: 0
+    currentAmount: 0
+    requiredAmount: 3

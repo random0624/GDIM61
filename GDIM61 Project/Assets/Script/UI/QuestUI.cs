@@ -25,11 +25,28 @@ public class QuestUI : MonoBehaviour{
         Instance = this;
     }
 
+    private void OnEnable()
+    {
+        if (GameController.Instance != null)
+        {
+            GameController.Instance.OnStateChanged += HandleStateChanged;
+        }
+    }
+
     public void Start(){
         for(int i = 0; i < testQuestAmount; i++){
             testQuests.Add(new QuestProgress(testQuest));
         }
+        SyncQuestUIVisibility();
         UpdateQuestUI();
+    }
+
+    private void OnDisable()
+    {
+        if (GameController.Instance != null)
+        {
+            GameController.Instance.OnStateChanged -= HandleStateChanged;
+        }
     }
 
     private void OnDestroy()
@@ -37,6 +54,30 @@ public class QuestUI : MonoBehaviour{
         if (Instance == this)
         {
             Instance = null;
+        }
+    }
+
+    private void HandleStateChanged(GameController.GameState state)
+    {
+        SetQuestUIVisible(state == GameController.GameState.Sailing);
+    }
+
+    private void SyncQuestUIVisibility()
+    {
+        if (GameController.Instance == null)
+        {
+            SetQuestUIVisible(false);
+            return;
+        }
+
+        SetQuestUIVisible(GameController.Instance.CurrentState == GameController.GameState.Sailing);
+    }
+
+    private void SetQuestUIVisible(bool visible)
+    {
+        if (questListContent != null)
+        {
+            questListContent.gameObject.SetActive(visible);
         }
     }
 

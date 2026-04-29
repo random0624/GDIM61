@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +22,11 @@ public class InGameMenu : MonoBehaviour
         paintButton.onClick.AddListener(OnPaintButtonClicked);
         quitButton.onClick.AddListener(OnQuitButtonClicked);
         closeCanvasButton.onClick.AddListener(OnCloseCanvasButtonClicked);
+
+        AddFloatEffect(sailButton);
+        AddFloatEffect(paintButton);
+        AddFloatEffect(quitButton);
+        AddFloatEffect(closeCanvasButton);
     }
 
     private void OnSailButtonClicked()
@@ -62,5 +65,13 @@ public class InGameMenu : MonoBehaviour
     private void OnCloseCanvasButtonClicked()
     {
         MainMenuDisplay();
+    }
+
+    private void AddFloatEffect(Button button)
+    {
+        if (button != null && button.GetComponent<MenuButtonFloatEffect>() == null)
+        {
+            button.gameObject.AddComponent<MenuButtonFloatEffect>();
+        }
     }
 }

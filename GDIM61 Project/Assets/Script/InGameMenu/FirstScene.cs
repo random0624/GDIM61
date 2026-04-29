@@ -11,7 +11,7 @@ public class FirstScene : MonoBehaviour
         bool mouseInput = Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1);
         if (keyInput || mouseInput)
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("Map");
         }
     }
 }

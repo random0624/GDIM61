@@ -3511,6 +3511,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0075140605, y: 0.0053563584, z: 0.005471452}
   m_Center: {x: -0.00000057474244, y: -0.0000500956, z: 0.002735726}
+--- !u!4 &508065937 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b3d3da12db7734dacbf304ccda38414b, type: 3}
+  m_PrefabInstance: {fileID: 1974041570}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &523586846
 GameObject:
   m_ObjectHideFlags: 0
@@ -4341,10 +4346,13 @@ MonoBehaviour:
   boat: {fileID: 1390935999}
   mapRect: {fileID: 584340347}
   playerMarker: {fileID: 1101000832}
-  worldMinX: -100
-  worldMaxX: 100
-  worldMinZ: -100
-  worldMaxZ: 100
+  chests:
+  - {fileID: 508065937}
+  chestMarkerPrefab: {fileID: 1574039499990765166, guid: 6d1a186286cd39740bf0bd4e2eb8a512, type: 3}
+  worldMinX: -200
+  worldMaxX: 200
+  worldMinZ: -200
+  worldMaxZ: 200
 --- !u!114 &584340349
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TestQuest
   m_EditorClassIdentifier: 
   questID: T25bc0897-e2ef-4939-925c-ea90c7e6449d
-  questName: Test
+  questName: Collect Treasure Chests
   questDescription: Collect Treasure Chests
   objectives:
   - objectiveID: 1

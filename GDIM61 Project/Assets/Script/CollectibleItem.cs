@@ -13,6 +13,11 @@ public class CollectibleItem : MonoBehaviour
         {
             collected = true;
 
+            if (QuestUI.Instance != null)
+            {
+                QuestUI.Instance.ReportObjectiveProgress(itemID, 1);
+            }
+
             if (CollectibleManager.Instance != null)
             {
                 CollectibleManager.Instance.AddCollect();

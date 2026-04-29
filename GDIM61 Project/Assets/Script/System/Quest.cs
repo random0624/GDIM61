@@ -58,4 +58,36 @@ public class Quest : ScriptableObject
         }
         public bool IsCompleted => objectives.TrueForAll(o => o.IsCompleted);
         public string QuestID => quest.questID;
+
+        public bool ReportObjectiveProgress(string objectiveID, int amount = 1)
+        {
+            if (string.IsNullOrEmpty(objectiveID) || amount <= 0)
+            {
+                return false;
+            }
+
+            bool changed = false;
+
+            foreach (var objective in objectives)
+            {
+                if (objective.objectiveID != objectiveID || objective.IsCompleted)
+                {
+                    continue;
+                }
+
+                int before = objective.currentAmount;
+                objective.currentAmount = Mathf.Clamp(
+                    objective.currentAmount + amount,
+                    0,
+                    objective.requiredAmount
+                );
+
+                if (objective.currentAmount != before)
+                {
+                    changed = true;
+                }
+            }
+
+            return changed;
+        }
     }

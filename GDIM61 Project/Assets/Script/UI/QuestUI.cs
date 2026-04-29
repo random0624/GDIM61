@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 
 public class QuestUI : MonoBehaviour{
+    public static QuestUI Instance { get; private set; }
+
     public Transform questListContent;
     public GameObject questEntryPrefab;
     public GameObject objectiveTextPrefab;
@@ -12,12 +14,50 @@ public class QuestUI : MonoBehaviour{
     private List<QuestProgress> testQuests = new();
     //Start is called before the first frame update
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
     public void Start(){
         for(int i = 0; i < testQuestAmount; i++){
             testQuests.Add(new QuestProgress(testQuest));
         }
         UpdateQuestUI();
     }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
+    public void ReportObjectiveProgress(string objectiveID, int amount = 1)
+    {
+        bool changed = false;
+
+        foreach (var quest in testQuests)
+        {
+            if (quest.ReportObjectiveProgress(objectiveID, amount))
+            {
+                changed = true;
+            }
+        }
+
+        if (changed)
+        {
+            UpdateQuestUI();
+        }
+    }
+
     public void UpdateQuestUI(){
         //Destroy existing quest entries
         foreach(Transform child in questListContent){
@@ -29,7 +69,7 @@ public class QuestUI : MonoBehaviour{
             TMP_Text questNameText = entry.transform.Find("QuestNameText").GetComponent<TMP_Text>();
             Transform objectiveList = entry.transform.Find("ObjectiveList");
 
-            questNameText.text = quest.quest.name;
+            questNameText.text = quest.quest.questName;
 
             foreach(var objective in quest.objectives){
                 GameObject objTEXTGO = Instantiate(objectiveTextPrefab, objectiveList);

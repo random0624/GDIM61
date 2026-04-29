@@ -9,6 +9,8 @@ public class InGameMenu : MonoBehaviour
     public Button closeCanvasButton;
     public RawImage DrawingCanvas;
 
+    private bool isPainting;
+
     private void Start()
     {
         if (GameController.Instance != null)
@@ -29,6 +31,29 @@ public class InGameMenu : MonoBehaviour
         AddFloatEffect(closeCanvasButton);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PaintByESC();
+        }
+    }
+
+    private void PaintByESC()
+    {
+        isPainting = !isPainting;
+
+        if (isPainting)
+        {
+            paintButton.gameObject.SetActive(true);
+
+        }
+        else
+        {
+
+            paintButton.gameObject.SetActive(false);
+        }
+    }
     private void OnSailButtonClicked()
     {
         MainMenuHide();

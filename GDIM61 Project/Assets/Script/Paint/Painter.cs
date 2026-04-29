@@ -19,6 +19,11 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
 
     public RectTransform _rectTransform;
 
+    [Header("Tool")]
+    public bool isEraser = false;
+    public int eraserSize = 20;
+    public Color eraserColor = Color.white;
+
     public void OnPointerDown(PointerEventData eventData) => Draw(eventData);
     public void OnDrag(PointerEventData eventData) => Draw(eventData);
     public void OnPointerUp(PointerEventData eventData) => _hasLastPoint = false;
@@ -98,8 +103,8 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
 
     private void PaintBrush(int x, int y)
     {
-        int radius = Mathf.Max(1, brushSize);
-        Color32 targetColor = brushColor;
+        int radius = isEraser ? Mathf.Max(1, eraserSize) : Mathf.Max(1, brushSize);
+        Color32 targetColor = isEraser ? eraserColor : brushColor;
 
         for (int i = -radius; i <= radius; i++)
         {
@@ -122,5 +127,18 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
         }
 
         _textureDirty = true;
+
+
+    }
+    public void SetBrushTool()
+    {
+        isEraser = false;
+        _hasLastPoint = false;
+    }
+
+    public void SetEraserTool()
+    {
+        isEraser = true;
+        _hasLastPoint = false;
     }
 }

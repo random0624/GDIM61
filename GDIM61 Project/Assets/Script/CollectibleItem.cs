@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class CollectibleItem : MonoBehaviour
 {
+    [SerializeField] private string itemID; // Unique identifier for the collectible item
     private bool collected = false;
 
     private void OnTriggerEnter(Collider other)

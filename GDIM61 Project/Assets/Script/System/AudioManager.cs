@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
     private void Awake()
     {
         // ȷ��������ֻ��һ�� AudioManager
-        if (Instance == null)
+       /* if (Instance == null)
         {
             Instance = this;
 
@@ -35,7 +35,7 @@ public class AudioManager : MonoBehaviour
         sourceBGM.playOnAwake = false;
 
         // Load saved audio settings when switch scenes
-        // LoadAudioSettings();
+        // LoadAudioSettings();*/
     }
 
     private void OnEnable()

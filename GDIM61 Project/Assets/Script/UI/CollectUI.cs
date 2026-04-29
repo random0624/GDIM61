@@ -5,31 +5,39 @@ using UnityEngine;
 public class CollectUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI collectText;
-    [SerializeField] private float collectPopScale = 1.22f;
-    [SerializeField] private float collectPopDuration = 0.18f;
+    [SerializeField] private float collectPopScale = 1.55f;
+    [SerializeField] private float collectPopDuration = 0.32f;
+    [SerializeField] private Color collectPopColor = new Color(1f, 0.86f, 0.28f, 1f);
+    [SerializeField] private float collectPopLift = 42f;
+    [SerializeField] private Vector2 autoTextAnchorPosition = new Vector2(120f, -70f);
 
     private Coroutine popRoutine;
+    private RectTransform collectTextRect;
     private Vector3 originalScale = Vector3.one;
+    private Vector2 originalAnchoredPosition;
+    private Color originalColor = Color.white;
     private int lastCurrent = -1;
+    private bool isSubscribed;
 
     private void Awake()
     {
-        if (collectText != null)
-        {
-            originalScale = collectText.transform.localScale;
-        }
+        EnsureCollectText();
+        CacheOriginalState();
     }
 
     private void OnEnable()
     {
-        if (CollectibleManager.Instance != null)
-        {
-            CollectibleManager.Instance.OnCollectChanged += UpdateUI;
-        }
+        EnsureCollectText();
+        SetTextVisible(true);
+        TrySubscribe();
     }
 
     private void Start()
     {
+        EnsureCollectText();
+        CacheOriginalState();
+        TrySubscribe();
+
         if (CollectibleManager.Instance != null)
         {
             UpdateUI(
@@ -41,10 +49,11 @@ public class CollectUI : MonoBehaviour
 
     private void OnDisable()
     {
-        if (CollectibleManager.Instance != null)
+        if (CollectibleManager.Instance != null && isSubscribed)
         {
             CollectibleManager.Instance.OnCollectChanged -= UpdateUI;
         }
+        isSubscribed = false;
 
         if (popRoutine != null)
         {
@@ -52,14 +61,15 @@ public class CollectUI : MonoBehaviour
             popRoutine = null;
         }
 
-        if (collectText != null)
-        {
-            collectText.transform.localScale = originalScale;
-        }
+        RestoreTextState();
+        SetTextVisible(false);
     }
 
     private void UpdateUI(int current, int total)
     {
+        EnsureCollectText();
+        CacheOriginalState();
+
         if (collectText == null)
         {
             return;
@@ -77,9 +87,15 @@ public class CollectUI : MonoBehaviour
 
     private void PlayCollectPop()
     {
+        if (collectText == null || collectTextRect == null)
+        {
+            return;
+        }
+
         if (popRoutine != null)
         {
             StopCoroutine(popRoutine);
+            RestoreTextState();
         }
 
         popRoutine = StartCoroutine(CollectPopRoutine());
@@ -95,13 +111,105 @@ public class CollectUI : MonoBehaviour
         {
             float progress = Mathf.Clamp01(elapsed / duration);
             float pop = Mathf.Sin(progress * Mathf.PI);
+            float lift = Mathf.Sin(progress * Mathf.PI) * collectPopLift;
+
             collectText.transform.localScale = Vector3.Lerp(originalScale, targetScale, pop);
+            collectTextRect.anchoredPosition = originalAnchoredPosition + new Vector2(0f, lift);
+            collectText.color = Color.Lerp(originalColor, collectPopColor, pop);
 
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        collectText.transform.localScale = originalScale;
+        RestoreTextState();
         popRoutine = null;
+    }
+
+    private void TrySubscribe()
+    {
+        if (CollectibleManager.Instance == null || isSubscribed)
+        {
+            return;
+        }
+
+        CollectibleManager.Instance.OnCollectChanged -= UpdateUI;
+        CollectibleManager.Instance.OnCollectChanged += UpdateUI;
+        isSubscribed = true;
+    }
+
+    private void EnsureCollectText()
+    {
+        if (collectText != null)
+        {
+            collectTextRect = collectText.GetComponent<RectTransform>();
+            return;
+        }
+
+        collectText = GetComponentInChildren<TextMeshProUGUI>(true);
+        if (collectText != null)
+        {
+            collectTextRect = collectText.GetComponent<RectTransform>();
+            return;
+        }
+
+        Canvas canvas = GetComponentInParent<Canvas>();
+        Transform textParent = canvas != null ? canvas.transform : transform;
+        GameObject textObject = new GameObject("CollectText");
+        textObject.transform.SetParent(textParent, false);
+
+        collectTextRect = textObject.AddComponent<RectTransform>();
+        collectTextRect.anchorMin = new Vector2(0f, 1f);
+        collectTextRect.anchorMax = new Vector2(0f, 1f);
+        collectTextRect.pivot = new Vector2(0f, 1f);
+        collectTextRect.anchoredPosition = autoTextAnchorPosition;
+        collectTextRect.sizeDelta = new Vector2(180f, 70f);
+
+        collectText = textObject.AddComponent<TextMeshProUGUI>();
+        collectText.alignment = TextAlignmentOptions.Left;
+        collectText.fontSize = 56f;
+        collectText.fontStyle = FontStyles.Bold;
+        collectText.color = Color.white;
+        collectText.raycastTarget = false;
+    }
+
+    private void SetTextVisible(bool visible)
+    {
+        if (collectText != null && collectText.gameObject.activeSelf != visible)
+        {
+            collectText.gameObject.SetActive(visible);
+        }
+    }
+
+    private void CacheOriginalState()
+    {
+        if (collectText == null)
+        {
+            return;
+        }
+
+        collectTextRect = collectText.GetComponent<RectTransform>();
+        originalScale = collectText.transform.localScale;
+        originalColor = collectText.color;
+
+        if (collectTextRect != null)
+        {
+            originalAnchoredPosition = collectTextRect.anchoredPosition;
+        }
+    }
+
+    private void RestoreTextState()
+    {
+        if (collectText == null)
+        {
+            return;
+        }
+
+        collectText.transform.localScale = originalScale;
+        collectText.color = originalColor;
+
+        if (collectTextRect != null)
+        {
+            collectTextRect.anchoredPosition = originalAnchoredPosition;
+        }
     }
 }

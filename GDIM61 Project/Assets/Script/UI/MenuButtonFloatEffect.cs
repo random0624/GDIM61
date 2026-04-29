@@ -5,8 +5,10 @@ using UnityEngine.UI;
 public class MenuButtonFloatEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Idle Float")]
-    [SerializeField] private float bobAmplitude = 5f;
-    [SerializeField] private float bobSpeed = 1.4f;
+    [SerializeField] private float horizontalFloatAmplitude = 8f;
+    [SerializeField] private float verticalFloatAmplitude = 10f;
+    [SerializeField] private float horizontalFloatSpeed = 1.1f;
+    [SerializeField] private float verticalFloatSpeed = 1.6f;
 
     [Header("Hover")]
     [SerializeField] private float hoverScale = 1.08f;
@@ -21,7 +23,8 @@ public class MenuButtonFloatEffect : MonoBehaviour, IPointerEnterHandler, IPoint
     private Vector3 startScale;
     private Color startColor = Color.white;
     private bool isHovering;
-    private float bobOffset;
+    private float horizontalOffset;
+    private float verticalOffset;
 
     private void Awake()
     {
@@ -43,7 +46,8 @@ public class MenuButtonFloatEffect : MonoBehaviour, IPointerEnterHandler, IPoint
 
         startAnchoredPosition = rectTransform.anchoredPosition;
         startScale = rectTransform.localScale;
-        bobOffset = Random.Range(0f, Mathf.PI * 2f);
+        horizontalOffset = Random.Range(0f, Mathf.PI * 2f);
+        verticalOffset = Random.Range(0f, Mathf.PI * 2f);
         isHovering = false;
 
         if (targetGraphic != null)
@@ -68,9 +72,11 @@ public class MenuButtonFloatEffect : MonoBehaviour, IPointerEnterHandler, IPoint
 
     private void Update()
     {
-        float bob = Mathf.Sin((Time.unscaledTime * bobSpeed) + bobOffset) * bobAmplitude;
+        float floatX = Mathf.Sin((Time.unscaledTime * horizontalFloatSpeed) + horizontalOffset) * horizontalFloatAmplitude;
+        float floatY = Mathf.Sin((Time.unscaledTime * verticalFloatSpeed) + verticalOffset) * verticalFloatAmplitude;
+        float driftX = Mathf.Cos((Time.unscaledTime * verticalFloatSpeed * 0.55f) + verticalOffset) * horizontalFloatAmplitude * 0.35f;
         float lift = isHovering ? hoverLift : 0f;
-        Vector2 targetPosition = startAnchoredPosition + new Vector2(0f, bob + lift);
+        Vector2 targetPosition = startAnchoredPosition + new Vector2(floatX + driftX, floatY + lift);
         Vector3 targetScale = startScale * (isHovering ? hoverScale : 1f);
 
         rectTransform.anchoredPosition = Vector2.Lerp(

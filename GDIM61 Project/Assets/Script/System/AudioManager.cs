@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
 {
-    // 单例实例
+    // 锟斤拷锟斤拷实锟斤拷
     public static AudioManager Instance { get; private set; }
 
     [Header("Button Sounds")]
@@ -14,9 +14,10 @@ public class AudioManager : MonoBehaviour
     public AudioSource sourceSFX;
     public AudioSource sourceBGM;
 
+    public AudioClip sailBGM;
     private void Awake()
     {
-        // 确保场景中只有一个 AudioManager
+        // 确锟斤拷锟斤拷锟斤拷锟斤拷只锟斤拷一锟斤拷 AudioManager
         if (Instance == null)
         {
             Instance = this;
@@ -37,7 +38,61 @@ public class AudioManager : MonoBehaviour
         // LoadAudioSettings();
     }
 
-    // 提供一个通用的播放接口
+    private void OnEnable()
+    {
+        if (GameController.Instance != null)
+        {
+            GameController.Instance.OnStateChanged += HandleGameStateChanged;
+            HandleGameStateChanged(GameController.Instance.CurrentState);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GameController.Instance != null)
+        {
+            GameController.Instance.OnStateChanged -= HandleGameStateChanged;
+        }
+    }
+
+    private void HandleGameStateChanged(GameController.GameState state)
+    {
+        if (state == GameController.GameState.MainMenu)
+        {
+            PlaySailBGM();
+        }
+        else
+        {
+            StopBGM();
+        }
+    }
+
+    private void PlaySailBGM()
+    {
+        if (sourceBGM == null || sailBGM == null)
+            return;
+
+        if (sourceBGM.clip != sailBGM)
+        {
+            sourceBGM.clip = sailBGM;
+        }
+
+        if (!sourceBGM.isPlaying)
+        {
+            sourceBGM.loop = true;
+            sourceBGM.Play();
+        }
+    }
+
+    private void StopBGM()
+    {
+        if (sourceBGM != null && sourceBGM.isPlaying)
+        {
+            sourceBGM.Stop();
+        }
+    }
+
+    // 锟结供一锟斤拷通锟矫的诧拷锟脚接匡拷
     public void PlaySound(AudioClip clip, float volume = 1f)
     {
         if (clip != null)

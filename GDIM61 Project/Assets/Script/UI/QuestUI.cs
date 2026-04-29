@@ -8,13 +8,13 @@ public class QuestUI : MonoBehaviour{
     public GameObject objectiveTextPrefab;
     public Quest testQuest;
     public int testQuestAmount;
-    private List<QuestProgress>
+    private List<QuestProgress> questProgressList;
     //Start is called before the first frame update
 
-    void Start(){
+    public void Start(){
 
     }
-    void Update(){
+    public void Update(){
 
     }
 }

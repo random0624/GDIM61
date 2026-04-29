@@ -16,6 +16,7 @@ public class QuestUI : MonoBehaviour{
         for(int i = 0; i < testQuestAmount; i++){
             testQuests.Add(new QuestProgress(testQuest));
         }
+        UpdateQuestUI();
     }
     public void UpdateQuestUI(){
         //Destroy existing quest entries

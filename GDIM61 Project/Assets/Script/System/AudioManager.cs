@@ -11,8 +11,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip clickSound;
     public AudioClip hoverSound;
 
-    public AudioSource sourceSFX;
-    public AudioSource sourceBGM;
+    //public AudioSource sourceSFX;
+    //public AudioSource sourceBGM;
 
     [Header("BGM")]
     public AudioClip mainMenuBGM;
@@ -23,7 +23,7 @@ public class AudioManager : MonoBehaviour
     private void Awake()
     {
         // ȷ��������ֻ��һ�� AudioManager
-        if (Instance == null)
+       /* if (Instance == null)
         {
             Instance = this;
 
@@ -40,11 +40,35 @@ public class AudioManager : MonoBehaviour
         sourceBGM.playOnAwake = false;
 
         // Load saved audio settings when switch scenes
-        // LoadAudioSettings();
+        // LoadAudioSettings();*/
+    }
+
+    private void OnEnable()
+    {
+        if (GameController.Instance != null)
+        {
+            GameController.Instance.OnStateChanged += HandleGameStateChanged;
+        }
+    }
+
+    private void Start()
+    {
+        if (GameController.Instance != null)
+        {
+            HandleGameStateChanged(GameController.Instance.CurrentState);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GameController.Instance != null)
+        {
+            GameController.Instance.OnStateChanged -= HandleGameStateChanged;
+        }
     }
 
     // �ṩһ��ͨ�õĲ��Žӿ�
-    public void PlaySound(AudioClip clip, float volume = 1f)
+    /*public void PlaySound(AudioClip clip, float volume = 1f)
     {
         if (clip != null)
         {
@@ -62,7 +86,42 @@ public class AudioManager : MonoBehaviour
     {
         if (hoverSound != null)
             sourceSFX.PlayOneShot(hoverSound);
+    }*/
+
+    public void PlayMainMenuBGM()
+    {
+        if (sourceMainMenu == null || mainMenuBGM == null)
+            return;
+
+        if (sourceMainMenu.clip != mainMenuBGM)
+        {
+            sourceMainMenu.clip = mainMenuBGM;
+        }
+
+        sourceMainMenu.loop = true;
+        if (!sourceMainMenu.isPlaying)
+        {
+            sourceMainMenu.Play();
+        }
     }
 
+    public void PlaySailingBGM()
+    {
+        if (sailingBGM != null)
+        sourceSailing.PlayOneShot(sailingBGM);
+    }
 
+    private void HandleGameStateChanged(GameController.GameState state)
+    {
+        if (state == GameController.GameState.MainMenu)
+        {
+            PlayMainMenuBGM();
+            return;
+        }
+
+        if (sourceMainMenu != null && sourceMainMenu.isPlaying)
+        {
+            sourceMainMenu.Stop();
+        }
+    }
 }

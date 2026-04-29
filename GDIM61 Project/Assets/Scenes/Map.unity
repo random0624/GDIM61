@@ -6869,11 +6869,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickSound: {fileID: 0}
   hoverSound: {fileID: 0}
-  sourceSFX: {fileID: 0}
-  sourceBGM: {fileID: 0}
-  mainMenuBGM: {fileID: 0}
+  mainMenuBGM: {fileID: 8300000, guid: 15ab603b1211a442c8dc2a9d40934ee8, type: 3}
   sailingBGM: {fileID: 0}
-  sourceMainMenu: {fileID: 0}
+  sourceMainMenu: {fileID: 1073650083}
   sourceSailing: {fileID: 0}
 --- !u!82 &1073650083
 AudioSource:
@@ -6885,11 +6883,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 15ab603b1211a442c8dc2a9d40934ee8, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

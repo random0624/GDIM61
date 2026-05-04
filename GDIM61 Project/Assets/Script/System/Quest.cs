@@ -2,6 +2,22 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
+public readonly struct ObjectiveProgressDelta
+{
+    public readonly string QuestID;
+    public readonly string ObjectiveID;
+    public readonly int PreviousAmount;
+    public readonly int NewAmount;
+
+    public ObjectiveProgressDelta(string questId, string objectiveId, int previousAmount, int newAmount)
+    {
+        QuestID = questId;
+        ObjectiveID = objectiveId;
+        PreviousAmount = previousAmount;
+        NewAmount = newAmount;
+    }
+}
+
 [CreateAssetMenu(menuName = "Quests/Quest")]
 public class Quest : ScriptableObject
 {
@@ -59,7 +75,10 @@ public class Quest : ScriptableObject
         public bool IsCompleted => objectives.TrueForAll(o => o.IsCompleted);
         public string QuestID => quest.questID;
 
-        public bool ReportObjectiveProgress(string objectiveID, int amount = 1)
+        public bool ReportObjectiveProgress(
+            string objectiveID,
+            int amount = 1,
+            List<ObjectiveProgressDelta> deltasOut = null)
         {
             if (string.IsNullOrEmpty(objectiveID) || amount <= 0)
             {
@@ -67,6 +86,7 @@ public class Quest : ScriptableObject
             }
 
             bool changed = false;
+            string questId = quest != null ? quest.questID : string.Empty;
 
             foreach (var objective in objectives)
             {
@@ -85,6 +105,12 @@ public class Quest : ScriptableObject
                 if (objective.currentAmount != before)
                 {
                     changed = true;
+                    deltasOut?.Add(
+                        new ObjectiveProgressDelta(
+                            questId,
+                            objective.objectiveID,
+                            before,
+                            objective.currentAmount));
                 }
             }
 

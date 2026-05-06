@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CollectibleManager : MonoBehaviour
 {
@@ -8,7 +9,12 @@ public class CollectibleManager : MonoBehaviour
     public event Action<int, int> OnCollectChanged;
 
     [SerializeField] private int totalCount = 1;
-    private int currentCount = 0;
+    [SerializeField] private int currentCount = 0;
+
+    [Header("Completion")]
+    [SerializeField] private bool loadSceneOnAllCollected = false;
+    [SerializeField] private string sceneNameOnAllCollected = "Level1";
+    private bool hasTriggeredCompletion = false;
 
     public int CurrentCount => currentCount;
     public int TotalCount => totalCount;
@@ -36,6 +42,15 @@ public class CollectibleManager : MonoBehaviour
         currentCount = Mathf.Clamp(currentCount, 0, totalCount);
 
         OnCollectChanged?.Invoke(currentCount, totalCount);
+
+        if (!hasTriggeredCompletion &&
+            loadSceneOnAllCollected &&
+            IsAllCollected &&
+            !string.IsNullOrWhiteSpace(sceneNameOnAllCollected))
+        {
+            hasTriggeredCompletion = true;
+            SceneManager.LoadScene(sceneNameOnAllCollected);
+        }
     }
 
     public void ResetCollect()

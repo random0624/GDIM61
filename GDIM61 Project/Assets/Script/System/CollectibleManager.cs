@@ -1,19 +1,16 @@
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CollectibleManager : MonoBehaviour
 {
     public static CollectibleManager Instance { get; private set; }
 
     public event Action<int, int> OnCollectChanged;
+    public event Action OnAllCollected;
 
     [SerializeField] private int totalCount = 1;
     [SerializeField] private int currentCount = 0;
 
-    [Header("Completion")]
-    [SerializeField] private bool loadSceneOnAllCollected = false;
-    [SerializeField] private string sceneNameOnAllCollected = "Level1";
     private bool hasTriggeredCompletion = false;
 
     public int CurrentCount => currentCount;
@@ -42,20 +39,17 @@ public class CollectibleManager : MonoBehaviour
         currentCount = Mathf.Clamp(currentCount, 0, totalCount);
 
         OnCollectChanged?.Invoke(currentCount, totalCount);
-
-        if (!hasTriggeredCompletion &&
-            loadSceneOnAllCollected &&
-            IsAllCollected &&
-            !string.IsNullOrWhiteSpace(sceneNameOnAllCollected))
+        if (!hasTriggeredCompletion && IsAllCollected)
         {
             hasTriggeredCompletion = true;
-            SceneManager.LoadScene(sceneNameOnAllCollected);
+            OnAllCollected?.Invoke();
         }
     }
 
     public void ResetCollect()
     {
         currentCount = 0;
+        hasTriggeredCompletion = false;
         OnCollectChanged?.Invoke(currentCount, totalCount);
     }
 }

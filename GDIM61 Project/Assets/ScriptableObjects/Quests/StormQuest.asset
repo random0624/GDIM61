@@ -15,4 +15,9 @@ MonoBehaviour:
   questID: S17343a4c-a97f-4030-a3ba-a420a2d0d83f
   questName: Rough Seas
   questDescription: Survive the storm!
-  objectives: []
+  objectives:
+  - objectiveID: 2
+    description: Survive the storm!
+    type: 1
+    currentAmount: 0
+    requiredAmount: 0

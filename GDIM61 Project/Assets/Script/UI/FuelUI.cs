@@ -12,10 +12,11 @@ public class FuelUI : MonoBehaviour
     private Vector3 originalScale = Vector3.one;
     private bool hasInitializedSlider;
     private float targetFuelValue;
-
+    
     private void Awake()
     {
         originalScale = transform.localScale;
+        fuelSlider.interactable = false;
     }
 
     private void OnEnable()

@@ -26,6 +26,7 @@ public class IntegrityUI : MonoBehaviour
     {
         originalScale = transform.localScale;
         originalLocalPosition = transform.localPosition;
+        integritySlider.interactable = false;
     }
 
     private void OnEnable()

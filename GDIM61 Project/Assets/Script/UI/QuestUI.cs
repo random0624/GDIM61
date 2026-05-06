@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 using TMPro;
 
@@ -12,6 +11,8 @@ public class QuestUI : MonoBehaviour{
     public Quest testQuest;
     public int testQuestAmount;
     private List<QuestProgress> testQuests = new();
+    private readonly List<ObjectiveProgressDelta> progressDeltaBuffer = new();
+    private readonly HashSet<(string questId, string objectiveId)> pendingObjectivePops = new();
     //Start is called before the first frame update
 
     private void Awake()
@@ -83,20 +84,30 @@ public class QuestUI : MonoBehaviour{
 
     public void ReportObjectiveProgress(string objectiveID, int amount = 1)
     {
-        bool changed = false;
+        progressDeltaBuffer.Clear();
 
         foreach (var quest in testQuests)
         {
-            if (quest.ReportObjectiveProgress(objectiveID, amount))
+            quest.ReportObjectiveProgress(objectiveID, amount, progressDeltaBuffer);
+        }
+
+        if (progressDeltaBuffer.Count == 0)
+        {
+            return;
+        }
+
+        pendingObjectivePops.Clear();
+        foreach (var delta in progressDeltaBuffer)
+        {
+            if (delta.NewAmount > delta.PreviousAmount &&
+                !string.IsNullOrEmpty(delta.QuestID) &&
+                !string.IsNullOrEmpty(delta.ObjectiveID))
             {
-                changed = true;
+                pendingObjectivePops.Add((delta.QuestID, delta.ObjectiveID));
             }
         }
 
-        if (changed)
-        {
-            UpdateQuestUI();
-        }
+        UpdateQuestUI();
     }
 
     public void UpdateQuestUI(){
@@ -116,8 +127,17 @@ public class QuestUI : MonoBehaviour{
                 GameObject objTEXTGO = Instantiate(objectiveTextPrefab, objectiveList);
                 TMP_Text objText = objTEXTGO.GetComponent<TMP_Text>();
                 objText.text = $"{objective.description} ({objective.currentAmount}/{objective.requiredAmount})"; //Collect Treasure chest amt...
+
+                TMPCollectPopFeedback popFeedback = objTEXTGO.GetComponent<TMPCollectPopFeedback>();
+                if (popFeedback != null &&
+                    pendingObjectivePops.Contains((quest.QuestID, objective.objectiveID)))
+                {
+                    popFeedback.PlayPop();
+                }
             }
         }
+
+        pendingObjectivePops.Clear();
     }
 }
 

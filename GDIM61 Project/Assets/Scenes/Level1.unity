@@ -84309,7 +84309,7 @@ GameObject:
   - component: {fileID: 736519025}
   - component: {fileID: 736519024}
   m_Layer: 5
-  m_Name: E
+  m_Name: Eraser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96436,6 +96436,7 @@ Transform:
   - {fileID: 87228887}
   - {fileID: 1211583602}
   - {fileID: 1883230225}
+  - {fileID: 1380513297}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &843473816
@@ -145758,7 +145759,7 @@ GameObject:
   - component: {fileID: 1291685346}
   - component: {fileID: 1291685345}
   m_Layer: 5
-  m_Name: P
+  m_Name: Paint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156283,12 +156284,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1380513295}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.798892, y: 64.65945, z: 17.270912}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -609.8244, y: -495.8494, z: 23.578514}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 843473815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1380641294
 PrefabInstance:
@@ -194659,6 +194660,7 @@ GameObject:
   - component: {fileID: 1751565020}
   - component: {fileID: 1751565019}
   - component: {fileID: 1751565018}
+  - component: {fileID: 1751565021}
   m_Layer: 5
   m_Name: DrawingCanvas
   m_TagString: Untagged
@@ -194743,6 +194745,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751565016}
   m_CullTransparentMesh: 1
+--- !u!114 &1751565021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751565016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08ee058c6fa75164eab625f8e4ef743a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paintRect: {fileID: 1751565017}
+  worldMapRect: {fileID: 74724605}
+  stickerPrefab: {fileID: 0}
 --- !u!1001 &1752270672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -238774,7 +238791,6 @@ SceneRoots:
   - {fileID: 275521214}
   - {fileID: 1990361155}
   - {fileID: 1250008277}
-  - {fileID: 1380513297}
   - {fileID: 599200300}
   - {fileID: 1425525007}
   - {fileID: 1968663969}

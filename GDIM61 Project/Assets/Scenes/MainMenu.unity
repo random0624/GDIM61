@@ -239,6 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ee7e5759a8f39c44ac565ad42b25bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextSceneName: IntroDialogue
 --- !u!1 &633218203
 GameObject:
   m_ObjectHideFlags: 0

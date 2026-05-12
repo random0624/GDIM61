@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c40ecd2a5fd010341b33e50ed744b922, type: 3}
+  m_Name: StartDialogue
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Me
+    portrait: {fileID: 0}
+    voiceClip: {fileID: 0}
+    content: Whos talking?
+    replyOptions: []
+    replyBranches: []
+    loopQuestion: 0
+  - speakerName: Old
+    portrait: {fileID: 0}
+    voiceClip: {fileID: 0}
+    content: you finally woke up
+    replyOptions: []
+    replyBranches: []
+    loopQuestion: 0
+  - speakerName: Me
+    portrait: {fileID: 0}
+    voiceClip: {fileID: 0}
+    content: Who are you? Where am I?
+    replyOptions: []
+    replyBranches: []
+    loopQuestion: 0
+  - speakerName: Old
+    portrait: {fileID: 0}
+    voiceClip: {fileID: 0}
+    content: Don't worry, I know you have a lot of questions, but your father left
+      a letter before he disappeared. It will tell you everything you want to know.
+    replyOptions: []
+    replyBranches: []
+    loopQuestion: 0
+  - speakerName: Old
+    portrait: {fileID: 0}
+    voiceClip: {fileID: 0}
+    content: What you want to know
+    replyOptions:
+    - My father, where is he now?
+    - Where am I?
+    - What Im going to do?
+    replyBranches:
+    - {fileID: 11400000, guid: 03d4cd9ade4f2704f84f5d4ea8ca468b, type: 2}
+    - {fileID: 11400000, guid: 5aeef4d7d8f97bf41a13fdfe0ac737ad, type: 2}
+    - {fileID: 11400000, guid: 7cb69cbc201659043b177ae1c2fb9621, type: 2}
+    loopQuestion: 1
+  - speakerName: Old
+    portrait: {fileID: 0}
+    voiceClip: {fileID: 0}
+    content: Here is the letter.
+    replyOptions: []
+    replyBranches: []
+    loopQuestion: 0

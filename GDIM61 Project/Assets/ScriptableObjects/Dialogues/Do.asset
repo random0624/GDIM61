@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c40ecd2a5fd010341b33e50ed744b922, type: 3}
+  m_Name: Do
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Old
+    portrait: {fileID: 0}
+    voiceClip: {fileID: 0}
+    content: Whether you wish to find your father or carry on his legacy, here is
+      a ship for you.
+    replyOptions: []
+    replyBranches: []
+    loopQuestion: 0
+  - speakerName: Old
+    portrait: {fileID: 0}
+    voiceClip: {fileID: 0}
+    content: Go forth and seek the truth of the world.
+    replyOptions: []
+    replyBranches: []
+    loopQuestion: 0

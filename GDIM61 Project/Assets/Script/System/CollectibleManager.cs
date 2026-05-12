@@ -1,21 +1,22 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class CollectibleManager : MonoBehaviour
 {
     public static CollectibleManager Instance { get; private set; }
 
-    public event Action<int, int> OnCollectChanged;
-    public event Action OnAllCollected;
+    // currentChest , maxChest
+    public event Action<int, int> OnChestChanged;
 
-    [SerializeField] private int totalCount = 1;
-    [SerializeField] private int currentCount = 0;
+    [SerializeField] private int maxChestCount = 99;
+    [SerializeField] private int currentChestCount = 0;
 
-    private bool hasTriggeredCompletion = false;
+    [SerializeField] private TextMeshProUGUI chestText;
+    [SerializeField] private TextMeshProUGUI inshopchestText;
 
-    public int CurrentCount => currentCount;
-    public int TotalCount => totalCount;
-    public bool IsAllCollected => currentCount >= totalCount;
+    public int CurrentChestCount => currentChestCount;
+    public int MaxChestCount => maxChestCount;
 
     private void Awake()
     {
@@ -30,26 +31,64 @@ public class CollectibleManager : MonoBehaviour
 
     private void Start()
     {
-        OnCollectChanged?.Invoke(currentCount, totalCount);
+        OnChestChanged?.Invoke(currentChestCount, maxChestCount);
     }
 
-    public void AddCollect()
+    // 加箱子
+    public void AddChest(int amount = 1)
     {
-        currentCount++;
-        currentCount = Mathf.Clamp(currentCount, 0, totalCount);
+        currentChestCount += amount;
 
-        OnCollectChanged?.Invoke(currentCount, totalCount);
-        if (!hasTriggeredCompletion && IsAllCollected)
+        currentChestCount = Mathf.Clamp(
+            currentChestCount,
+            0,
+            maxChestCount
+        );
+
+        OnChestChanged?.Invoke(currentChestCount, maxChestCount);
+        UpdateUI();
+
+        Debug.Log("Chest : " + currentChestCount);
+    }
+
+    // 消耗箱子
+    public bool UseChest(int amount = 1)
+    {
+        if (currentChestCount < amount)
         {
-            hasTriggeredCompletion = true;
-            OnAllCollected?.Invoke();
+            Debug.Log("Not Enough Chest");
+            return false;
         }
+
+        currentChestCount -= amount;
+
+        currentChestCount = Mathf.Clamp(
+            currentChestCount,
+            0,
+            maxChestCount
+        );
+
+        OnChestChanged?.Invoke(currentChestCount, maxChestCount);
+        UpdateUI();
+
+        return true;
     }
 
-    public void ResetCollect()
+    // 重置
+    public void ResetChest()
     {
-        currentCount = 0;
-        hasTriggeredCompletion = false;
-        OnCollectChanged?.Invoke(currentCount, totalCount);
+        currentChestCount = 0;
+
+        OnChestChanged?.Invoke(currentChestCount, maxChestCount);
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        if (chestText != null)
+        {
+            chestText.text = "Chest: " + currentChestCount;
+            inshopchestText.text = "Chest: " + currentChestCount;
+        }
     }
 }

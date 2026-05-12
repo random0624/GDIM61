@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TutorialExitPrompt : MonoBehaviour
-{
+{/*
     [Header("Prompt UI")]
     [SerializeField] private TMP_Text promptText;
     [SerializeField] private string promptMessage = "Press Enter to enter next level";
@@ -142,4 +142,6 @@ public class TutorialExitPrompt : MonoBehaviour
         promptCanvasGroup.alpha = 1f;
         fadeRoutine = null;
     }
+
+*/
 }

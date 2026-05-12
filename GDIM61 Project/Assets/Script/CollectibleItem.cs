@@ -13,14 +13,13 @@ public class CollectibleItem : MonoBehaviour
         {
             collected = true;
 
-            if (QuestUI.Instance != null)
-            {
-                QuestUI.Instance.ReportObjectiveProgress(itemID, 1);
-            }
-
             if (CollectibleManager.Instance != null)
             {
-                CollectibleManager.Instance.AddCollect();
+                CollectibleManager.Instance.AddChest();
+            }
+            if (MoneyManager.Instance != null)
+            {
+                MoneyManager.Instance.AddMoney(Random.Range(1,20));
             }
 
             gameObject.SetActive(false);

@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 
 public class CollectUI : MonoBehaviour
-{
+{ /*
     [SerializeField] private TextMeshProUGUI collectText;
     [SerializeField] private float collectPopScale = 1.55f;
     [SerializeField] private float collectPopDuration = 0.32f;
@@ -212,4 +212,5 @@ public class CollectUI : MonoBehaviour
             collectTextRect.anchoredPosition = originalAnchoredPosition;
         }
     }
+    */
 }

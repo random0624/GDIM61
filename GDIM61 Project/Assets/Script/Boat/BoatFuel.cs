@@ -58,4 +58,9 @@ public class BoatFuel : MonoBehaviour
     {
         return currentFuel / maxFuel;
     }
+
+    public void ChangeMaxFuel()
+    {
+        maxFuel = maxFuel + 20;
+    }
 }

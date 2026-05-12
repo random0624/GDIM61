@@ -56,4 +56,9 @@ public class BoatIntegrity : MonoBehaviour
         OnIntegrityFull?.Invoke();
     }
 
+    public void ChangeMaxIntergrity()
+    {
+        maxIntegrity = maxIntegrity + 20;
+    }
+
 }

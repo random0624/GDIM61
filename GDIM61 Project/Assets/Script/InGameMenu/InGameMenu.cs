@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InGameMenu : MonoBehaviour
@@ -8,6 +9,7 @@ public class InGameMenu : MonoBehaviour
     [SerializeField] private Button paintButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private Button shopButton;
+    [SerializeField] private Button nextRegionButton;
     [SerializeField] private Button closeCanvasButton;
     [SerializeField] private Button closeShopButton;
 
@@ -27,6 +29,8 @@ public class InGameMenu : MonoBehaviour
             GameController.Instance.OnMainMenuStarted += MainMenuDisplay;
         }
 
+        nextRegionButton.gameObject.SetActive(false);
+
         MainMenuDisplay();
 
         sailButton.onClick.AddListener(OnSailButtonClicked);
@@ -35,6 +39,7 @@ public class InGameMenu : MonoBehaviour
         shopButton.onClick.AddListener(OnShopButtonClicked);
         closeCanvasButton.onClick.AddListener(OnCloseCanvasButtonClicked);
         closeShopButton.onClick.AddListener(OnCloseShopButtonClicked);
+        nextRegionButton.onClick.AddListener(NextLevel);
 
         AddFloatEffect(sailButton);
         AddFloatEffect(paintButton);
@@ -47,6 +52,11 @@ public class InGameMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             OpenPaintFromSailing();
+        }
+
+        if (Sticker.Instance.isWin)
+        {
+            nextRegionButton.gameObject.SetActive(true);
         }
     }
 
@@ -164,5 +174,10 @@ public class InGameMenu : MonoBehaviour
     private void OnCloseShopButtonClicked()
     {
         MainMenuDisplay();
+    }
+
+    private void NextLevel()
+    {
+        SceneManager.LoadScene("Level1");
     }
 }

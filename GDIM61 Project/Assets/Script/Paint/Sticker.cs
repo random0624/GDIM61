@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class Sticker : MonoBehaviour
 {
+    public static Sticker Instance;
     [Header("Canvas Area")]
     [SerializeField] private RectTransform paintRect;
     [SerializeField] private RectTransform worldMapRect;
@@ -10,6 +11,7 @@ public class Sticker : MonoBehaviour
     [Header("Sticker")]
     [SerializeField] private Image stickerPrefab;
     [SerializeField] private RectTransform winArea;
+     public bool isWin = false;
 
     public void PlaceSticker(Sprite sprite, Vector2 screenPosition, Camera eventCamera)
     {
@@ -39,7 +41,7 @@ public class Sticker : MonoBehaviour
     screenPosition,
     eventCamera))
         {
-            Debug.Log("WIN");
+            isWin = true;
         }
     }
 

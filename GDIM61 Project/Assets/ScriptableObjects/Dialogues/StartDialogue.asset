@@ -16,14 +16,14 @@ MonoBehaviour:
   - speakerName: Me
     portrait: {fileID: 21300000, guid: 21501e2c3ef51dc4389ee66404425362, type: 3}
     voiceClip: {fileID: 0}
-    content: Whos talking?
+    content: Who's talking?
     replyOptions: []
     replyBranches: []
     loopQuestion: 0
   - speakerName: Old
     portrait: {fileID: 21300000, guid: d45242d7a37a3f7468441bc66a80d885, type: 3}
     voiceClip: {fileID: 0}
-    content: you finally woke up
+    content: You finally woke up.
     replyOptions: []
     replyBranches: []
     loopQuestion: 0
@@ -37,15 +37,15 @@ MonoBehaviour:
   - speakerName: Old
     portrait: {fileID: 21300000, guid: d45242d7a37a3f7468441bc66a80d885, type: 3}
     voiceClip: {fileID: 0}
-    content: Don't worry, I know you have a lot of questions, but your father left
-      a letter before he disappeared. It will tell you everything you want to know.
+    content: I know you have a lot of questions. Your father left a letter before
+      he disappeared. It will tell you everything you want to know.
     replyOptions: []
     replyBranches: []
     loopQuestion: 0
   - speakerName: Old
     portrait: {fileID: 21300000, guid: d45242d7a37a3f7468441bc66a80d885, type: 3}
     voiceClip: {fileID: 0}
-    content: What you want to know
+    content: What do you want to know?
     replyOptions:
     - My father, where is he now?
     - Where am I?

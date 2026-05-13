@@ -22,7 +22,10 @@ public class BoatController : MonoBehaviour
     private float currentSailAngle = 0f;
     private Vector3 currentWindDirection = Vector3.zero;
     private float currentWindStrength = 0f;
-    private WindZoneArea currentWindZone;
+
+    [Header("Wind")]
+    [Tooltip("Scene global wind (WindZoneArea). World direction; not parented to the boat. Leave empty to find one in the scene.")]
+    [SerializeField] private WindZoneArea globalWind;
 
     [SerializeField] private float damageMultiplier = 3f;
     [SerializeField] private float minIslandCollisionDamage = 5f;
@@ -46,6 +49,9 @@ public class BoatController : MonoBehaviour
         {
             gameObject.AddComponent<BoatHitFeedback>();
         }
+
+        if (globalWind == null)
+            globalWind = FindObjectOfType<WindZoneArea>();
     }
 
     private void Start()
@@ -131,6 +137,8 @@ public class BoatController : MonoBehaviour
 
         currentSpeed = Mathf.Clamp(currentSpeed, -maxSpeed, maxSpeed);
 
+        SyncGlobalWind();
+
         Vector3 playerMove = transform.forward * currentSpeed;
         Vector3 sailForce = CalculateSailForce();
         Vector3 finalMove = playerMove + sailForce;
@@ -189,6 +197,20 @@ public class BoatController : MonoBehaviour
         Vector3 forwardForce = boatForward * forwardAmount * rawForce.magnitude;
 
         return forwardForce + sideForce;
+    }
+
+    private void SyncGlobalWind()
+    {
+        if (globalWind != null)
+        {
+            currentWindDirection = globalWind.WindDirection;
+            currentWindStrength = globalWind.WindStrength;
+        }
+        else
+        {
+            currentWindDirection = Vector3.zero;
+            currentWindStrength = 0f;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -266,25 +288,6 @@ public class BoatController : MonoBehaviour
             BoatFuel.Instance.Refill();
             BoatIntegrity.Instance.HealIntegrity();
 
-        }
-
-        WindZoneArea windZone = other.GetComponent<WindZoneArea>();
-        if (windZone != null)
-        {
-            currentWindZone = windZone;
-            currentWindDirection = windZone.WindDirection;
-            currentWindStrength = windZone.WindStrength;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        WindZoneArea windZone = other.GetComponent<WindZoneArea>();
-        if (windZone != null && windZone == currentWindZone)
-        {
-            currentWindZone = null;
-            currentWindDirection = Vector3.zero;
-            currentWindStrength = 0f;
         }
     }
 

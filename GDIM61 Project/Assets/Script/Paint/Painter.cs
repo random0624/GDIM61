@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -11,6 +12,7 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
 
     public RawImage _rawImage;
     public RawImage miniMapRawImage;
+
     private Texture2D _drawableTexture;
     private Color32[] _pixelBuffer;
     private bool _textureDirty;
@@ -24,26 +26,44 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
     public int eraserSize = 20;
     public Color eraserColor = Color.white;
 
+    private string SavePath => Path.Combine(Application.persistentDataPath, "map_paint.png");
+
     public void OnPointerDown(PointerEventData eventData) => Draw(eventData);
     public void OnDrag(PointerEventData eventData) => Draw(eventData);
-    public void OnPointerUp(PointerEventData eventData) => _hasLastPoint = false;
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        _hasLastPoint = false;
+        SavePainting();
+    }
 
     void Start()
     {
         _drawableTexture = new Texture2D(textureSize, textureSize, TextureFormat.RGBA32, false);
         _drawableTexture.filterMode = FilterMode.Point;
 
-        _pixelBuffer = new Color32[textureSize * textureSize];
-        Color32 white = Color.white;
-        for (int i = 0; i < _pixelBuffer.Length; i++)
+        if (File.Exists(SavePath))
         {
-            _pixelBuffer[i] = white;
+            byte[] data = File.ReadAllBytes(SavePath);
+            _drawableTexture.LoadImage(data);
+            _pixelBuffer = _drawableTexture.GetPixels32();
+        }
+        else
+        {
+            _pixelBuffer = new Color32[textureSize * textureSize];
+            Color32 white = Color.white;
+
+            for (int i = 0; i < _pixelBuffer.Length; i++)
+            {
+                _pixelBuffer[i] = white;
+            }
+
+            _drawableTexture.SetPixels32(_pixelBuffer);
+            _drawableTexture.Apply();
         }
 
-        _drawableTexture.SetPixels32(_pixelBuffer);
-        _drawableTexture.Apply();
-
         _rawImage.texture = _drawableTexture;
+
         if (miniMapRawImage != null)
         {
             miniMapRawImage.texture = _drawableTexture;
@@ -53,9 +73,7 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
     void LateUpdate()
     {
         if (!_textureDirty)
-        {
             return;
-        }
 
         _drawableTexture.SetPixels32(_pixelBuffer);
         _drawableTexture.Apply(false);
@@ -65,12 +83,19 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
     private void Draw(PointerEventData eventData)
     {
         Vector2 localPoint;
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, eventData.position, eventData.pressEventCamera, out localPoint))
+
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _rectTransform,
+            eventData.position,
+            eventData.pressEventCamera,
+            out localPoint))
         {
             float normalizedX = (localPoint.x / _rectTransform.rect.width) + _rectTransform.pivot.x;
             float normalizedY = (localPoint.y / _rectTransform.rect.height) + _rectTransform.pivot.y;
+
             int px = Mathf.Clamp((int)(normalizedX * textureSize), 0, textureSize - 1);
             int py = Mathf.Clamp((int)(normalizedY * textureSize), 0, textureSize - 1);
+
             Vector2Int currentPoint = new Vector2Int(px, py);
 
             if (_hasLastPoint)
@@ -97,6 +122,7 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
             float t = i / (float)steps;
             int x = Mathf.RoundToInt(Mathf.Lerp(start.x, end.x, t));
             int y = Mathf.RoundToInt(Mathf.Lerp(start.y, end.y, t));
+
             PaintBrush(x, y);
         }
     }
@@ -111,14 +137,13 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
             for (int j = -radius; j <= radius; j++)
             {
                 if ((i * i) + (j * j) > radius * radius)
-                {
                     continue;
-                }
 
                 int targetX = x + i;
                 int targetY = y + j;
 
-                if (targetX >= 0 && targetX < textureSize && targetY >= 0 && targetY < textureSize)
+                if (targetX >= 0 && targetX < textureSize &&
+                    targetY >= 0 && targetY < textureSize)
                 {
                     int index = targetY * textureSize + targetX;
                     _pixelBuffer[index] = targetColor;
@@ -127,9 +152,22 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
         }
 
         _textureDirty = true;
-
-
     }
+
+    public void SavePainting()
+    {
+        if (_drawableTexture == null || _pixelBuffer == null)
+            return;
+
+        _drawableTexture.SetPixels32(_pixelBuffer);
+        _drawableTexture.Apply(false);
+
+        byte[] pngData = _drawableTexture.EncodeToPNG();
+        File.WriteAllBytes(SavePath, pngData);
+
+        Debug.Log("Painting saved to: " + SavePath);
+    }
+
     public void SetBrushTool()
     {
         isEraser = false;
@@ -140,5 +178,18 @@ public class Painter : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointe
     {
         isEraser = true;
         _hasLastPoint = false;
+    }
+
+    public void ClearPainting()
+    {
+        Color32 white = Color.white;
+
+        for (int i = 0; i < _pixelBuffer.Length; i++)
+        {
+            _pixelBuffer[i] = white;
+        }
+
+        _textureDirty = true;
+        SavePainting();
     }
 }

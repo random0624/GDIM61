@@ -23,7 +23,10 @@ public class BoatFuel : MonoBehaviour
 
     void Start()
     {
+        maxFuel = PlayerPrefs.GetFloat("MaxFuel", maxFuel);
+
         currentFuel = maxFuel;
+
         OnFuelChanged?.Invoke(currentFuel, maxFuel);
     }
 
@@ -61,6 +64,9 @@ public class BoatFuel : MonoBehaviour
 
     public void ChangeMaxFuel()
     {
-        maxFuel = maxFuel + 20;
+        maxFuel += 20;
+
+        PlayerPrefs.SetFloat("MaxFuel", maxFuel);
+        PlayerPrefs.Save();
     }
 }

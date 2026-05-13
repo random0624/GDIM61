@@ -4,6 +4,11 @@ using UnityEngine.UI;
 public class Sticker : MonoBehaviour
 {
     public static Sticker Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     [Header("Canvas Area")]
     [SerializeField] private RectTransform paintRect;
     [SerializeField] private RectTransform worldMapRect;
@@ -36,12 +41,18 @@ public class Sticker : MonoBehaviour
         mapSticker.sprite = sprite;
         mapSticker.rectTransform.anchoredPosition = mapPos;
 
-        if (RectTransformUtility.RectangleContainsScreenPoint(
-    winArea,
-    screenPosition,
-    eventCamera))
+        bool insideWinArea = RectTransformUtility.RectangleContainsScreenPoint(
+            winArea,
+            screenPosition,
+            eventCamera
+        );
+
+        Debug.Log("inside win area: " + insideWinArea);
+
+        if (insideWinArea)
         {
             isWin = true;
+            Debug.Log("Win triggered!");
         }
     }
 

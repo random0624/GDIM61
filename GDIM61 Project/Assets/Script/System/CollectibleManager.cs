@@ -31,7 +31,10 @@ public class CollectibleManager : MonoBehaviour
 
     private void Start()
     {
+        currentChestCount = PlayerPrefs.GetInt("CurrentChestCount", 0);
+
         OnChestChanged?.Invoke(currentChestCount, maxChestCount);
+        UpdateUI();
     }
 
     // 加箱子
@@ -49,6 +52,7 @@ public class CollectibleManager : MonoBehaviour
         UpdateUI();
 
         Debug.Log("Chest : " + currentChestCount);
+        SaveChest();
     }
 
     // 消耗箱子
@@ -70,7 +74,7 @@ public class CollectibleManager : MonoBehaviour
 
         OnChestChanged?.Invoke(currentChestCount, maxChestCount);
         UpdateUI();
-
+        SaveChest();
         return true;
     }
 
@@ -81,6 +85,7 @@ public class CollectibleManager : MonoBehaviour
 
         OnChestChanged?.Invoke(currentChestCount, maxChestCount);
         UpdateUI();
+        SaveChest();
     }
 
     private void UpdateUI()
@@ -90,5 +95,11 @@ public class CollectibleManager : MonoBehaviour
             chestText.text = "Chest: " + currentChestCount;
             inshopchestText.text = "Chest: " + currentChestCount;
         }
+    }
+
+    private void SaveChest()
+    {
+        PlayerPrefs.SetInt("CurrentChestCount", currentChestCount);
+        PlayerPrefs.Save();
     }
 }

@@ -23,7 +23,10 @@ public class BoatIntegrity : MonoBehaviour
 
     void Start()
     {
+        maxIntegrity = PlayerPrefs.GetFloat("MaxIntegrity", maxIntegrity);
+
         currentIntegrity = maxIntegrity;
+
         OnIntegrityChanged?.Invoke(currentIntegrity, maxIntegrity);
     }
 
@@ -58,7 +61,10 @@ public class BoatIntegrity : MonoBehaviour
 
     public void ChangeMaxIntergrity()
     {
-        maxIntegrity = maxIntegrity + 20;
+        maxIntegrity += 20;
+
+        PlayerPrefs.SetFloat("MaxIntegrity", maxIntegrity);
+        PlayerPrefs.Save();
     }
 
 }

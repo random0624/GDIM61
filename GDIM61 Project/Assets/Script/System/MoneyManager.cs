@@ -16,6 +16,7 @@ public class MoneyManager : MonoBehaviour
 
     private void Start()
     {
+        currentMoney = PlayerPrefs.GetInt("CurrentMoney", 0);
         UpdateUI();
     }
 
@@ -26,6 +27,7 @@ public class MoneyManager : MonoBehaviour
         UpdateUI();
 
         Debug.Log("Money : " + currentMoney);
+        SaveMoney();
     }
 
     public void ReduceMoney(int amount)
@@ -34,6 +36,8 @@ public class MoneyManager : MonoBehaviour
         UpdateUI();
 
         Debug.Log("Money : " + currentMoney);
+
+        SaveMoney();
     }
 
     private void UpdateUI()
@@ -43,5 +47,11 @@ public class MoneyManager : MonoBehaviour
             moneyText.text = "$ " + currentMoney;
             inShopMoneyText.text = "$ " + currentMoney;
         }
+    }
+
+    private void SaveMoney()
+    {
+        PlayerPrefs.SetInt("CurrentMoney", currentMoney);
+        PlayerPrefs.Save();
     }
 }

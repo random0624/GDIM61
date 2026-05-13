@@ -29,7 +29,7 @@ public class InGameMenu : MonoBehaviour
             GameController.Instance.OnMainMenuStarted += MainMenuDisplay;
         }
 
-        nextRegionButton.gameObject.SetActive(false);
+        nextRegionButton.interactable = false ;
 
         MainMenuDisplay();
 
@@ -59,7 +59,7 @@ public class InGameMenu : MonoBehaviour
 
         if (Sticker.Instance.isWin)
         {
-            nextRegionButton.gameObject.SetActive(true);
+            nextRegionButton.interactable = true;
             Debug.Log("Win");
         }
     }
@@ -147,7 +147,7 @@ public class InGameMenu : MonoBehaviour
         paintButton.gameObject.SetActive(true);
         quitButton.gameObject.SetActive(true);
         shopButton.gameObject.SetActive(true);
-
+        nextRegionButton.gameObject.SetActive(true);
         drawingCanvas.gameObject.SetActive(false);
         closeCanvasButton.gameObject.SetActive(false);
         shopPanel.gameObject.SetActive(false);
@@ -159,6 +159,7 @@ public class InGameMenu : MonoBehaviour
         paintButton.gameObject.SetActive(false);
         quitButton.gameObject.SetActive(false);
         shopButton.gameObject.SetActive(false);
+        nextRegionButton.gameObject.SetActive(false);
     }
 
     private void AddFloatEffect(Button button)
@@ -182,6 +183,16 @@ public class InGameMenu : MonoBehaviour
 
     private void NextLevel()
     {
-        SceneManager.LoadScene("Level1");
+        int currentIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextIndex = currentIndex + 1;
+
+        if (nextIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(nextIndex);
+        }
+        else
+        {
+            Debug.Log("No more levels!");
+        }
     }
 }

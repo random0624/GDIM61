@@ -110,7 +110,7 @@ public class DeathScreenUI : MonoBehaviour
     {
         Time.timeScale = 1f;
         Scene activeScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(activeScene.buildIndex);
+        SceneManager.LoadScene("IntroDialogue");
     }
 
     private void SetRandomDeathLine()

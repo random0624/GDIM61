@@ -54,9 +54,13 @@ public class InGameMenu : MonoBehaviour
             OpenPaintFromSailing();
         }
 
+        if (Sticker.Instance == null)
+            return;
+
         if (Sticker.Instance.isWin)
         {
             nextRegionButton.gameObject.SetActive(true);
+            Debug.Log("Win");
         }
     }
 

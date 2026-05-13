@@ -252,6 +252,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 663307631}
   - {fileID: 251930638}
   - {fileID: 417763451}
   - {fileID: 1103492175}
@@ -7213,7 +7214,7 @@ RectTransform:
   - {fileID: 460139613}
   - {fileID: 2038765610}
   - {fileID: 141523693}
-  m_Father: {fileID: 869771871}
+  m_Father: {fileID: 48797315}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7233,7 +7234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   globalWind: {fileID: 0}
-  boat: {fileID: 0}
+  boat: {fileID: 1557336685}
   boatHeadingArrow: {fileID: 1981571029}
   windArrow: {fileID: 0}
   autoFindBoat: 1
@@ -9710,7 +9711,6 @@ RectTransform:
   m_Children:
   - {fileID: 1274661654}
   - {fileID: 48797315}
-  - {fileID: 663307631}
   - {fileID: 1125435165}
   - {fileID: 1262296978}
   - {fileID: 1268301481}

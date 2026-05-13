@@ -2251,7 +2251,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 285373405}
-  - component: {fileID: 285373406}
   m_Layer: 0
   m_Name: GlobalWindRef
   m_TagString: Untagged
@@ -2274,21 +2273,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1390935999}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &285373406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 285373404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e674ebb12edfb64b864a991da19cdb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  worldWindYawDegrees: 70
-  windStrength: 1.5
-  windStrengthDelayAfterSailStart: 1
 --- !u!1 &289990311
 GameObject:
   m_ObjectHideFlags: 0
@@ -4895,7 +4879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a1fc1174b0b49ed90691d55709cd01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  globalWind: {fileID: 285373406}
+  globalWind: {fileID: 0}
   boat: {fileID: 1390935999}
   boatHeadingArrow: {fileID: 789922415}
   windArrow: {fileID: 0}
@@ -16228,7 +16212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a1fc1174b0b49ed90691d55709cd01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  globalWind: {fileID: 285373406}
+  globalWind: {fileID: 0}
   boat: {fileID: 1390935999}
   boatHeadingArrow: {fileID: 0}
   windArrow: {fileID: 789922415}

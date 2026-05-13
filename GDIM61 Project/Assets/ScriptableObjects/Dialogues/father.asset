@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Old
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d45242d7a37a3f7468441bc66a80d885, type: 3}
     voiceClip: {fileID: 0}
     content: Your father was once one of the draftsmen here; one day, he left and
       never returned.

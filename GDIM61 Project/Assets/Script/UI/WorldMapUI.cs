@@ -17,10 +17,10 @@ public class WorldMapUI : MonoBehaviour
 
 
     [Header("World Bounds")]
-    [SerializeField] private float worldMinX = -100f;
-    [SerializeField] private float worldMaxX = 100f;
-    [SerializeField] private float worldMinZ = -100f;
-    [SerializeField] private float worldMaxZ = 100f;
+    private float worldMinX = -400f;
+    private float worldMaxX = 400f;
+    private float worldMinZ = -400f;
+    private float worldMaxZ = 400f;
 
     private void Start()
     {

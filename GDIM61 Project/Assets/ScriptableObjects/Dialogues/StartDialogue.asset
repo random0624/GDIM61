@@ -14,28 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Me
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 21501e2c3ef51dc4389ee66404425362, type: 3}
     voiceClip: {fileID: 0}
     content: Whos talking?
     replyOptions: []
     replyBranches: []
     loopQuestion: 0
   - speakerName: Old
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d45242d7a37a3f7468441bc66a80d885, type: 3}
     voiceClip: {fileID: 0}
     content: you finally woke up
     replyOptions: []
     replyBranches: []
     loopQuestion: 0
   - speakerName: Me
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 21501e2c3ef51dc4389ee66404425362, type: 3}
     voiceClip: {fileID: 0}
     content: Who are you? Where am I?
     replyOptions: []
     replyBranches: []
     loopQuestion: 0
   - speakerName: Old
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d45242d7a37a3f7468441bc66a80d885, type: 3}
     voiceClip: {fileID: 0}
     content: Don't worry, I know you have a lot of questions, but your father left
       a letter before he disappeared. It will tell you everything you want to know.
@@ -43,7 +43,7 @@ MonoBehaviour:
     replyBranches: []
     loopQuestion: 0
   - speakerName: Old
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d45242d7a37a3f7468441bc66a80d885, type: 3}
     voiceClip: {fileID: 0}
     content: What you want to know
     replyOptions:
@@ -56,7 +56,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 7cb69cbc201659043b177ae1c2fb9621, type: 2}
     loopQuestion: 1
   - speakerName: Old
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: d45242d7a37a3f7468441bc66a80d885, type: 3}
     voiceClip: {fileID: 0}
     content: Here is the letter.
     replyOptions: []

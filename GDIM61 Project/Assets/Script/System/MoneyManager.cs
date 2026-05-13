@@ -32,6 +32,8 @@ public class MoneyManager : MonoBehaviour
 
     public void ReduceMoney(int amount)
     {
+        if (amount > currentMoney)
+            return;
         currentMoney -= amount;
         UpdateUI();
 

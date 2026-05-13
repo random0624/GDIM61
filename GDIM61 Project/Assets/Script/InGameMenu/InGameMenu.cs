@@ -91,6 +91,13 @@ public class InGameMenu : MonoBehaviour
     private void OnQuitButtonClicked()
     {
         Application.Quit();
+        ResetSaveData();
+    }
+
+    public void ResetSaveData()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
     }
     private void OpenPaintFromSailing()
     {

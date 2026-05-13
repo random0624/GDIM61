@@ -854,6 +854,7 @@ MonoBehaviour:
   mapUI: {fileID: 584340346}
   integrityUI: {fileID: 780016726}
   fuelUI: {fileID: 84536997}
+  compassUI: {fileID: 0}
 --- !u!1 &347453423
 GameObject:
   m_ObjectHideFlags: 0

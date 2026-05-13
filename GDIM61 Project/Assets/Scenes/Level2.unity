@@ -3953,6 +3953,7 @@ MonoBehaviour:
   mapUI: {fileID: 1939473471}
   integrityUI: {fileID: 636948871}
   fuelUI: {fileID: 1901019089}
+  compassUI: {fileID: 0}
 --- !u!1001 &434225300
 PrefabInstance:
   m_ObjectHideFlags: 0

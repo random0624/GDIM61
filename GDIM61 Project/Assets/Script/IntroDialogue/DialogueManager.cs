@@ -5,12 +5,12 @@ using System;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager Instance;//Éú³Éµ¥Àý
-    public event Action<DialogueLine> OnLineStarted; // µ±ÐÂµÄÒ»ÐÐ»°¿ªÊ¼
-    public event Action OnDialogueEnded;            // µ±¶Ô»°½áÊø
+    public static DialogueManager Instance;//ï¿½ï¿½ï¿½Éµï¿½ï¿½ï¿½
+    public event Action<DialogueLine> OnLineStarted; // ï¿½ï¿½ï¿½Âµï¿½Ò»ï¿½Ð»ï¿½ï¿½ï¿½Ê¼
+    public event Action OnDialogueEnded;            // ï¿½ï¿½ï¿½Ô»ï¿½ï¿½ï¿½ï¿½ï¿½
     public event Action<DialogueLine> OnDialogueReplied;
 
-    private Queue<DialogueLine> _lineQueue = new Queue<DialogueLine>();//´´½¨Ë³Ðò
+    private Queue<DialogueLine> _lineQueue = new Queue<DialogueLine>();//ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½
     private DialogueLine _currentLine;
     private DialogueLine _returnLine;
     private bool _waitingLoopChoice;
@@ -19,13 +19,13 @@ public class DialogueManager : MonoBehaviour
 
     void Awake() => Instance = this;
 
-    //¶Ô»°¿ªÊ¼
+    //ï¿½Ô»ï¿½ï¿½ï¿½Ê¼
     public void StartDialogue(DialogueData data)
     {
         if (data == null) return;
-        _lineQueue.Clear();//É¾³ýÉÏ´ÎµÄline
-        foreach (var line in data.lines) _lineQueue.Enqueue(line);//°ÑSOµÄ¶Ô»°¶¼·Å½øÈ¥
-        IsInDialogue = true;//½øÈë¶Ô»°true
+        _lineQueue.Clear();//É¾ï¿½ï¿½ï¿½Ï´Îµï¿½line
+        foreach (var line in data.lines) _lineQueue.Enqueue(line);//ï¿½ï¿½SOï¿½Ä¶Ô»ï¿½ï¿½ï¿½ï¿½Å½ï¿½È¥
+        IsInDialogue = true;//ï¿½ï¿½ï¿½ï¿½Ô»ï¿½true
         DisplayNextLine();
     }
 
@@ -51,14 +51,14 @@ public class DialogueManager : MonoBehaviour
             EndDialogue();
             return;
         }
-        _currentLine = _lineQueue.Dequeue();// ÏÈÈ¡³öµ±Ç°¾ä
-        OnLineStarted?.Invoke(_currentLine);//Õ¹Ê¾Õâ¾ä
+        _currentLine = _lineQueue.Dequeue();// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½
+        OnLineStarted?.Invoke(_currentLine);//Õ¹Ê¾ï¿½ï¿½ï¿½
 
-        if (_currentLine.replyOptions != null && _currentLine.replyOptions.Count > 0)//Èç¹ûÕâ¾äÖÐÃ»ÓÐbranch
+        if (_currentLine.replyOptions != null && _currentLine.replyOptions.Count > 0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½branch
         {
-            if (_currentLine.loopQuestion)//Èç¹ûÊÇloopÐÔÖÊ
+            if (_currentLine.loopQuestion)//ï¿½ï¿½ï¿½ï¿½ï¿½loopï¿½ï¿½ï¿½ï¿½
             {
-                _returnLine = _currentLine; //¼ÇÂ¼Õâ¶Î
+                _returnLine = _currentLine; //ï¿½ï¿½Â¼ï¿½ï¿½ï¿½
                 _waitingLoopChoice = true;
             }
             else
@@ -78,8 +78,8 @@ public class DialogueManager : MonoBehaviour
         _currentLine = null;
         _returnLine = null;
         IsInDialogue = false;
-        OnDialogueEnded?.Invoke();//ÊÂ¼þendÍ¨Öª
-        Debug.Log("¶Ô»°½áÊø");
+        OnDialogueEnded?.Invoke();//ï¿½Â¼ï¿½endÍ¨Öª
+        Debug.Log("ï¿½Ô»ï¿½ï¿½ï¿½ï¿½ï¿½");
     }
 
     private void ShowReplyOption()
@@ -96,7 +96,7 @@ public class DialogueManager : MonoBehaviour
 
         _lineQueue.Clear();
 
-        // Ã»ÓÐºóÐø¶Ô»°£¬²Å½áÊø
+        // Ã»ï¿½Ðºï¿½ï¿½ï¿½ï¿½Ô»ï¿½ï¿½ï¿½ï¿½Å½ï¿½ï¿½ï¿½
         if (nextDialogue == null)
         {
             if (_currentLine.loopQuestion)

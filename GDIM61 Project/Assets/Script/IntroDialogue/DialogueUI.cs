@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,9 +22,9 @@ public class DialogueUI : MonoBehaviour
         dialogPanel.SetActive(false);
         for (int i = 0; i < _branchButtons.Count; i++)
             _branchButtons[i].gameObject.SetActive(false);
-        // ¶©ÔÄÊÂ¼ş
-        DialogueManager.Instance.OnLineStarted += ShowLine;//ÊÕµ½Í¨ÖªÕ¹Ê¾UI
-        DialogueManager.Instance.OnDialogueEnded += HideUI;//ÊÕµ½Í¨Öª¹Ø±ÕÕ¹Ê¾
+        // è®¢é˜…äº‹ä»¶
+        DialogueManager.Instance.OnLineStarted += ShowLine;//æ”¶åˆ°é€šçŸ¥å±•ç¤ºUI
+        DialogueManager.Instance.OnDialogueEnded += HideUI;//æ”¶åˆ°é€šçŸ¥å…³é—­å±•ç¤º
         DialogueManager.Instance.OnDialogueReplied += ShowChoice;
     }
 
@@ -39,12 +37,12 @@ public class DialogueUI : MonoBehaviour
                 _branchButtons[i].gameObject.SetActive(false);
                 isChoosed = false;
             }
-            //Ñ¡ÔñÍê¹Ø±ÕµôËùÓĞµÄ°´Å¥
+            //é€‰æ‹©å®Œå…³é—­æ‰æ‰€æœ‰çš„æŒ‰é’®
         }
     }
 
 
-    private void ShowLine(DialogueLine line)//Õ¹Ê¾¶ÔÓ¦lineµÄÎÄ×ÖºÍname
+    private void ShowLine(DialogueLine line)//å±•ç¤ºå¯¹åº”lineçš„æ–‡å­—å’Œname
     {
         dialogPanel.SetActive(true);
         _nameText.text = line.speakerName;
@@ -79,21 +77,21 @@ public class DialogueUI : MonoBehaviour
 
     private void ShowChoice(DialogueLine line)
     {
-        for (int i = 0; i < _branchButtons.Count; i++)//±éÀúËùÓĞ°´Å¥
+        for (int i = 0; i < _branchButtons.Count; i++)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ°ï¿½Å¥
         {
             if (i < line.replyOptions.Count)
             {
-                _branchButtons[i].gameObject.SetActive(true);//´ò¿ª
+                _branchButtons[i].gameObject.SetActive(true);//ï¿½ï¿½
                 _branchTexts[i].text = line.replyOptions[i];
 
-                int index = i; // ·ÀÖ¹±Õ°üÎÊÌâ
+                int index = i; // ï¿½ï¿½Ö¹ï¿½Õ°ï¿½ï¿½ï¿½ï¿½ï¿½
 
                 _branchButtons[i].onClick.RemoveAllListeners();
                 _branchButtons[i].onClick.AddListener(() =>
                 {
                     DialogueManager.Instance.SelectReply(index);
                     isChoosed = true;
-                    //Ã¿¸ö°´Å¥¸½ÉÏ¼àÌı
+                    //Ã¿ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½
                 });
             }
             else
@@ -114,7 +112,7 @@ public class DialogueUI : MonoBehaviour
         }
     }
 
-    // Íæ¼Òµã»÷¶Ô»°¿òÍÆ½øÏÂÒ»¾ä
+    // ç©å®¶ç‚¹å‡»å¯¹è¯æ¡†æ¨è¿›ä¸‹ä¸€å¥
     public void OnClickNext()
     {
         if (DialogueManager.Instance.IsWaitingLoopChoice)

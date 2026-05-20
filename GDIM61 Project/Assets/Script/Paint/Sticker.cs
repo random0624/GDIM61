@@ -15,6 +15,7 @@ public class Sticker : MonoBehaviour
 
     [Header("Sticker")]
     [SerializeField] private Image stickerPrefab;
+    [SerializeField] private Vector2 mapStickerSize = new Vector2(40, 40);
     [SerializeField] private RectTransform winArea;
      public bool isWin = false;
 
@@ -40,6 +41,7 @@ public class Sticker : MonoBehaviour
         Image mapSticker = Instantiate(stickerPrefab, worldMapRect);
         mapSticker.sprite = sprite;
         mapSticker.rectTransform.anchoredPosition = mapPos;
+        mapSticker.rectTransform.sizeDelta = mapStickerSize;
 
         bool insideWinArea = RectTransformUtility.RectangleContainsScreenPoint(
             winArea,

@@ -72,6 +72,16 @@ public class InGameMenu : MonoBehaviour
         {
             GameController.Instance.StartSail();
         }
+
+        if (BoatFuel.Instance != null)
+        {
+            BoatFuel.Instance.Refill();
+        }
+
+        if (BoatIntegrity.Instance != null)
+        {
+            BoatIntegrity.Instance.HealIntegrity();
+        }
     }
 
     private void OnPaintButtonClicked()

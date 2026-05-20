@@ -10717,8 +10717,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.689745, y: 1.5335798, z: 6.306496}
-  m_Center: {x: 0.09219551, y: 0.2667899, z: 2.200743}
+  m_Size: {x: 1.9282541, y: 0.89080715, z: 5.4939184}
+  m_Center: {x: -0.02976799, y: -0.054596424, z: 1.8948278}
 --- !u!4 &1390935999
 Transform:
   m_ObjectHideFlags: 0
@@ -12667,7 +12667,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press 'Space' to draw
+  m_text: Press 'ESC' to draw sticker
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17652,11 +17652,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5642342096805198021, guid: 6c3b4599dc885814ab48db689e57f560, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 208.4324
       objectReference: {fileID: 0}
     - target: {fileID: 5642342096805198021, guid: 6c3b4599dc885814ab48db689e57f560, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 186.0576
       objectReference: {fileID: 0}
     - target: {fileID: 5642342096805198021, guid: 6c3b4599dc885814ab48db689e57f560, type: 3}
       propertyPath: m_LocalPosition.x
@@ -17688,11 +17688,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5642342096805198021, guid: 6c3b4599dc885814ab48db689e57f560, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 812
+      value: 757.7838
       objectReference: {fileID: 0}
     - target: {fileID: 5642342096805198021, guid: 6c3b4599dc885814ab48db689e57f560, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -19.899231
+      value: 23.129517
       objectReference: {fileID: 0}
     - target: {fileID: 5642342096805198021, guid: 6c3b4599dc885814ab48db689e57f560, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

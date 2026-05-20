@@ -18,6 +18,30 @@ public class CutSceneManager : MonoBehaviour
     [SerializeField] private float typeSpeed = 0.04f;
     [SerializeField] private float fadeDuration = 1f;
 
+    [Header("Black intro typing audio (introText only; does not use DialogueUI)")]
+    [SerializeField] private AudioClip introTypingClip;
+    [SerializeField] [Range(0f, 1f)] private float introTypingVolume = 0.5f;
+    [SerializeField] private bool introTypingLoopWhileTyping = true;
+    [SerializeField] private AudioSource introTypingAudioSource;
+
+    private void Awake()
+    {
+        if (introTypingAudioSource == null)
+            introTypingAudioSource = GetComponent<AudioSource>();
+        if (introTypingAudioSource == null)
+        {
+            AudioManager manager = FindObjectOfType<AudioManager>();
+            if (manager != null)
+                introTypingAudioSource = manager.GetComponent<AudioSource>();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (DialogueManager.Instance != null)
+            DialogueManager.Instance.OnDialogueEnded -= OnDialogueEnded;
+    }
+
     private void Start()
     {
         blackPanel.gameObject.SetActive(true);
@@ -79,12 +103,35 @@ public class CutSceneManager : MonoBehaviour
     private IEnumerator TypeText(string content)
     {
         introText.text = "";
-
+        StartIntroTypingAudio();
         foreach (char c in content)
         {
             introText.text += c;
             yield return new WaitForSeconds(typeSpeed);
         }
+
+        StopIntroTypingAudio();
+    }
+
+    private void StartIntroTypingAudio()
+    {
+        if (introTypingClip == null || introTypingAudioSource == null)
+            return;
+
+        introTypingAudioSource.enabled = true;
+        introTypingAudioSource.mute = false;
+        introTypingAudioSource.gameObject.SetActive(true);
+        introTypingAudioSource.clip = introTypingClip;
+        introTypingAudioSource.volume = introTypingVolume;
+        introTypingAudioSource.loop = introTypingLoopWhileTyping;
+        introTypingAudioSource.spatialBlend = 0f;
+        introTypingAudioSource.Play();
+    }
+
+    private void StopIntroTypingAudio()
+    {
+        if (introTypingAudioSource != null && introTypingAudioSource.isPlaying)
+            introTypingAudioSource.Stop();
     }
 
     public void OnClick()

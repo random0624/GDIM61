@@ -671,6 +671,10 @@ MonoBehaviour:
   startDialogue: {fileID: 11400000, guid: ec0619d6a294abf4f8656994d999005a, type: 2}
   typeSpeed: 0.08
   fadeDuration: 1
+  introTypingClip: {fileID: 8300000, guid: 1d4efd2fa013f44ca8e89b4e69478a4d, type: 3}
+  introTypingVolume: 0.5
+  introTypingLoopWhileTyping: 1
+  introTypingAudioSource: {fileID: 1525427953}
 --- !u!114 &496669540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1922,7 +1926,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

@@ -19,6 +19,13 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Vector3 sailViewEuler = new Vector3(90f, 0f, 0f);
     [SerializeField] private AnimationCurve sailTransitionCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
+    [Header("Zoom")]
+    [SerializeField] private float zoomSpeed = 10f;
+    [SerializeField] private float minZoom = 20f;
+    [SerializeField] private float maxZoom = 60f;
+
+    private float currentZoom = 30f;
+
     private Vector3 velocity = Vector3.zero;
     private bool followActive;
     private bool isTransitioning;
@@ -46,6 +53,7 @@ public class CameraFollow : MonoBehaviour
 
     void Start()
     {
+        currentZoom = offset.y;
         TryFindTarget();
         TrySubscribeToGameStarted();
     }
@@ -125,6 +133,18 @@ public class CameraFollow : MonoBehaviour
         ApplyHitShakeOffset();
 
         transform.rotation = Quaternion.Euler(sailViewEuler);
+
+        Zoom();
+    }
+
+    private void Zoom()
+    {
+        float z = Input.mouseScrollDelta.y;
+
+        currentZoom -= z * zoomSpeed;
+        currentZoom = Mathf.Clamp(currentZoom, minZoom, maxZoom);
+
+        offset = new Vector3(0f, currentZoom, 0f);
     }
 
     private void ReturnToStart()

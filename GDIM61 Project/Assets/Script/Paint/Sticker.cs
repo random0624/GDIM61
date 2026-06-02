@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,10 +6,7 @@ public class Sticker : MonoBehaviour
 {
     public static Sticker Instance;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
+
     [Header("Canvas Area")]
     [SerializeField] private RectTransform paintRect;
     [SerializeField] private RectTransform worldMapRect;
@@ -18,9 +16,29 @@ public class Sticker : MonoBehaviour
     [SerializeField] private Vector2 mapStickerSize = new Vector2(40, 40);
     [SerializeField] private RectTransform winArea;
      public bool isWin = false;
+    [SerializeField] private int maxStickerCount = 3;
+    private int stickerCount = 0;
+    [SerializeField] private TMP_Text stickerCountText;
 
+    [SerializeField] private DeathScreenUI deathScreenUI;
+
+    private void Awake()
+    {
+        Instance = this;
+
+        deathScreenUI = FindObjectOfType<DeathScreenUI>();
+
+        UpdateStickerCountUI();
+    }
     public void PlaceSticker(Sprite sprite, Vector2 screenPosition, Camera eventCamera)
     {
+
+        if (isWin)
+            return;
+
+        if (stickerCount >= maxStickerCount)
+            return;
+
         if (!RectTransformUtility.RectangleContainsScreenPoint(paintRect, screenPosition, eventCamera))
             return;
 
@@ -43,6 +61,9 @@ public class Sticker : MonoBehaviour
         mapSticker.rectTransform.anchoredPosition = mapPos;
         mapSticker.rectTransform.sizeDelta = mapStickerSize;
 
+        stickerCount++;
+        UpdateStickerCountUI();
+
         bool insideWinArea = RectTransformUtility.RectangleContainsScreenPoint(
             winArea,
             screenPosition,
@@ -55,6 +76,19 @@ public class Sticker : MonoBehaviour
         {
             isWin = true;
             Debug.Log("Win triggered!");
+        }
+
+        if (stickerCount >= maxStickerCount && !isWin)
+        {
+            if (deathScreenUI == null)
+            {
+                deathScreenUI = FindObjectOfType<DeathScreenUI>();
+            }
+
+            if (deathScreenUI != null)
+            {
+                deathScreenUI.TriggerDeath();
+            }
         }
     }
 
@@ -76,5 +110,11 @@ public class Sticker : MonoBehaviour
         );
 
         return new Vector2(mapX, mapY);
+    }
+
+    private void UpdateStickerCountUI()
+    {
+        stickerCountText.text =
+            stickerCount + "/" + maxStickerCount;
     }
 }

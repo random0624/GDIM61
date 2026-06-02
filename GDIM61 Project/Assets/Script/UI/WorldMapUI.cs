@@ -17,10 +17,10 @@ public class WorldMapUI : MonoBehaviour
 
 
     [Header("World Bounds")]
-    private float worldMinX = -400f;
-    private float worldMaxX = 400f;
-    private float worldMinZ = -400f;
-    private float worldMaxZ = 400f;
+    private float worldMinX = -500f;
+    private float worldMaxX = 500f;
+    private float worldMinZ = -500f;
+    private float worldMaxZ = 500f;
 
     private void Start()
     {

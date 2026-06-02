@@ -35,7 +35,7 @@ public class IslandPaintPromptTrigger : MonoBehaviour
             return;
         }
 
-        if (!Input.GetKeyDown(KeyCode.Space))
+        if (!Input.GetKeyDown(KeyCode.Escape))
         {
             return;
         }
@@ -51,6 +51,8 @@ public class IslandPaintPromptTrigger : MonoBehaviour
         {
             GameController.Instance.StartPaint();
         }
+
+        promptObject.gameObject.SetActive(false);
 
         if (drawingCanvas != null)
         {

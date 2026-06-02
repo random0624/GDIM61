@@ -123,4 +123,9 @@ public class DeathScreenUI : MonoBehaviour
         int randomIndex = Random.Range(0, deathLines.Length);
         deathLineText.text = deathLines[randomIndex];
     }
+
+    public void TriggerDeath()
+    {
+        ShowDeathScreen();
+    }
 }

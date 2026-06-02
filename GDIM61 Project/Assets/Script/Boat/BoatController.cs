@@ -24,11 +24,12 @@ public class BoatController : MonoBehaviour
     [SerializeField] private float maxSailBoost = 2f;
 
     private float currentSailAngle = 0f;
-    private Vector3 currentWindDirection = Vector3.zero;
-    private float currentWindStrength = 0f;
 
     [Header("Wind")]
-    [SerializeField] private WindZoneArea globalWind;
+    private WindZoneArea currentWindZone;
+
+    private Vector3 currentWindDirection = Vector3.zero;
+    private float currentWindStrength = 0f;
 
     [Header("Island Damage")]
     [SerializeField] private float damageMultiplier = 3f;
@@ -50,10 +51,6 @@ public class BoatController : MonoBehaviour
             gameObject.AddComponent<BoatHitFeedback>();
         }
 
-        if (globalWind == null)
-        {
-            globalWind = FindObjectOfType<WindZoneArea>();
-        }
     }
 
     private void OnEnable()
@@ -199,10 +196,10 @@ public class BoatController : MonoBehaviour
 
     private void SyncGlobalWind()
     {
-        if (globalWind != null)
+        if (currentWindZone != null)
         {
-            currentWindDirection = globalWind.WindDirection;
-            currentWindStrength = globalWind.WindStrength;
+            currentWindDirection = currentWindZone.WindDirection;
+            currentWindStrength = currentWindZone.WindStrength;
         }
         else
         {
@@ -302,6 +299,14 @@ public class BoatController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        WindZoneArea windZone = other.GetComponent<WindZoneArea>();
+
+        if (windZone != null)
+        {
+            currentWindZone = windZone;
+            return;
+        }
+
         if (other.CompareTag("HomePoint"))
         {
             if (GameController.Instance != null)
@@ -323,6 +328,16 @@ public class BoatController : MonoBehaviour
             {
                 successPanel.SetActive(true);
             }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        WindZoneArea windZone = other.GetComponent<WindZoneArea>();
+
+        if (windZone != null && windZone == currentWindZone)
+        {
+            currentWindZone = null;
         }
     }
 

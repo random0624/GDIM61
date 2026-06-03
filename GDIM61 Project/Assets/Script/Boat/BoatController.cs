@@ -10,6 +10,12 @@ public class BoatController : MonoBehaviour
 
     public float currentSpeed = 0f;
 
+    /// <summary>World-space speed from throttle + sail force (units/sec). Used for splash/VFX.</summary>
+    public float CurrentMoveSpeed { get; private set; }
+
+    /// <summary>True while Horizontal/Vertical input is held (WASD or arrows).</summary>
+    public bool HasMovementInput { get; private set; }
+
     private bool controlEnabled;
     private Vector3 spawnPosition;
     private Quaternion spawnRotation;
@@ -51,6 +57,10 @@ public class BoatController : MonoBehaviour
             gameObject.AddComponent<BoatHitFeedback>();
         }
 
+        if (GetComponent<BoatAudio>() == null)
+        {
+            gameObject.AddComponent<BoatAudio>();
+        }
     }
 
     private void OnEnable()
@@ -100,6 +110,8 @@ public class BoatController : MonoBehaviour
         transform.rotation = spawnRotation;
 
         currentSpeed = 0f;
+        CurrentMoveSpeed = 0f;
+        HasMovementInput = false;
         currentSailAngle = 0f;
         currentWindDirection = Vector3.zero;
         currentWindStrength = 0f;
@@ -116,11 +128,17 @@ public class BoatController : MonoBehaviour
     private void Update()
     {
         if (!controlEnabled)
+        {
+            HasMovementInput = false;
             return;
+        }
 
         if (GameController.Instance == null ||
             GameController.Instance.CurrentState != GameController.GameState.Sailing)
+        {
+            HasMovementInput = false;
             return;
+        }
 
         SailRotation();
         Move();
@@ -130,6 +148,10 @@ public class BoatController : MonoBehaviour
     {
         float moveInput = Input.GetAxisRaw("Vertical");
         float turnInput = Input.GetAxisRaw("Horizontal");
+
+        HasMovementInput =
+            Mathf.Abs(moveInput) > 0.01f ||
+            Mathf.Abs(turnInput) > 0.01f;
 
         if (moveInput > 0)
         {
@@ -165,6 +187,7 @@ public class BoatController : MonoBehaviour
         Vector3 playerMove = transform.forward * currentSpeed;
         Vector3 sailForce = CalculateSailForce();
         Vector3 finalMove = playerMove + sailForce;
+        CurrentMoveSpeed = finalMove.magnitude;
 
         transform.position += finalMove * Time.deltaTime;
 

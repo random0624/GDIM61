@@ -30,6 +30,11 @@ public class SharkChaseController : MonoBehaviour
     [SerializeField] private float returnStopDistance = 0.5f;
 
     private SharkState currentState = SharkState.Idle;
+
+    /// <summary>True while the shark is in Alert or Chasing (jaws theme plays).</summary>
+    public bool IsAggressiveState =>
+        currentState == SharkState.Alert || currentState == SharkState.Chasing;
+
     private float alertTimer;
     private float chaseTimer;
     private Vector3 spawnPosition;
@@ -42,6 +47,11 @@ public class SharkChaseController : MonoBehaviour
         spawnRotation = transform.rotation;
         modelRotationOffset = Quaternion.Inverse(Quaternion.Euler(0f, spawnRotation.eulerAngles.y, 0f)) * spawnRotation;
         SetAlertIcon(false);
+
+        if (GetComponent<SharkChaseAudio>() == null)
+        {
+            gameObject.AddComponent<SharkChaseAudio>();
+        }
     }
 
     private void Start()

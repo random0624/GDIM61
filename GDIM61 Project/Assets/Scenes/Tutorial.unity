@@ -13942,6 +13942,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
       insertIndex: -1
       addedObject: {fileID: 191014339}
+    - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 908741369}
     - targetCorrespondingSourceObject: {fileID: -2722822783677623751, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1046601745}
@@ -13951,6 +13954,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
   m_PrefabInstance: {fileID: 908741367}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &908741369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191014338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14f8ccbec78bb42b0a39f144e04fc55f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jawsClip: {fileID: 8300000, guid: fcdfaa63e02954e9d910020708433e57, type: 3}
+  volume: 0.7
+  jawsAudioSource: {fileID: 0}
 --- !u!1001 &920674440
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19105,6 +19123,7 @@ GameObject:
   - component: {fileID: 1390935996}
   - component: {fileID: 1390935995}
   - component: {fileID: 1390936001}
+  - component: {fileID: 1390936002}
   m_Layer: 0
   m_Name: Boat
   m_TagString: Player
@@ -19203,6 +19222,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!114 &1390936002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390935994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a910cc842c3d04ddd8f9558cc2a3d07e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterSplashClip: {fileID: 8300000, guid: a76595cb6c1c249669296724733f344e, type: 3}
+  velocityThreshold: 1
+  stopHysteresis: 0.85
+  volume: 0.15
+  scaleVolumeWithSpeed: 1
+  maxSpeedForFullVolume: 4
+  minVolumeWhenPlaying: 0.08
+  splashAudioSource: {fileID: 0}
 --- !u!1001 &1393519416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28576,6 +28615,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1990361158}
+    - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1990361162}
     - targetCorrespondingSourceObject: {fileID: -2722822783677623751, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1990361159}
@@ -28644,6 +28686,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2774220344278030320, guid: 2dbe5332a7a2c4feda112977f8d87962, type: 3}
   m_PrefabInstance: {fileID: 1990361155}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1990361162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990361156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14f8ccbec78bb42b0a39f144e04fc55f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jawsClip: {fileID: 8300000, guid: fcdfaa63e02954e9d910020708433e57, type: 3}
+  volume: 0.15
+  jawsAudioSource: {fileID: 0}
 --- !u!4 &1997437902 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5901609915621537468, guid: c66bdc3baacd4171bfb9402e69687fe1, type: 3}

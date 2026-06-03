@@ -24,20 +24,32 @@ public class WorldMapUI : MonoBehaviour
 
     private void Start()
     {
+        if (chests == null || chestMarkerPrefab == null || mapRect == null)
+        {
+            return;
+        }
+
         foreach (Transform chest in chests)
         {
-            RectTransform marker = Instantiate(chestMarkerPrefab, mapRect);
-            chestMarkers.Add(marker);
+            if (chest != null)
+            {
+                RectTransform marker = Instantiate(chestMarkerPrefab, mapRect);
+                chestMarkers.Add(marker);
+            }
+            else
+            {
+                chestMarkers.Add(null);
+            }
         }
     }
 
     void Update()
     {
-        if (boat == null || mapRect == null || playerMarker == null) return;
+        if (boat == null || mapRect == null || playerMarker == null || chests == null) return;
 
         playerMarker.anchoredPosition = WorldToMap(boat.position);
 
-        for (int i = 0; i < chests.Count; i++)
+        for (int i = 0; i < chests.Count && i < chestMarkers.Count; i++)
         {
             if (chests[i] == null || chestMarkers[i] == null) continue;
 
@@ -55,4 +67,3 @@ public class WorldMapUI : MonoBehaviour
         return new Vector2(mapX, mapY);
     }
 }
-

@@ -73,7 +73,7 @@ public class TMPCollectPopFeedback : MonoBehaviour
             rectTransform.anchoredPosition = originalAnchoredPosition + new Vector2(0f, lift);
             targetText.color = Color.Lerp(originalColor, popColor, envelope);
 
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
 

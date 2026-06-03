@@ -9,6 +9,8 @@ public class MoneyManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private TextMeshProUGUI inShopMoneyText;
 
+    public int CurrentMoney => currentMoney;
+
     private void Awake()
     {
         Instance = this;
@@ -30,16 +32,22 @@ public class MoneyManager : MonoBehaviour
         SaveMoney();
     }
 
-    public void ReduceMoney(int amount)
+    public bool CanSpend(int amount)
+    {
+        return currentMoney >= amount;
+    }
+
+    public bool ReduceMoney(int amount)
     {
         if (amount > currentMoney)
-            return;
+            return false;
         currentMoney -= amount;
         UpdateUI();
 
         Debug.Log("Money : " + currentMoney);
 
         SaveMoney();
+        return true;
     }
 
     private void UpdateUI()
@@ -47,6 +55,10 @@ public class MoneyManager : MonoBehaviour
         if (moneyText != null)
         {
             moneyText.text = "$ " + currentMoney;
+        }
+
+        if (inShopMoneyText != null)
+        {
             inShopMoneyText.text = "$ " + currentMoney;
         }
     }

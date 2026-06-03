@@ -27,12 +27,19 @@ public class MenuButtonFloatEffect : MonoBehaviour, IPointerEnterHandler, IPoint
 
     private RectTransform rectTransform;
     private Graphic targetGraphic;
+    private Selectable selectable;
     private Outline hoverOutline;
     private Shadow hoverShadow;
     private Vector2 startAnchoredPosition;
     private Vector3 startScale;
     private Quaternion startRotation;
     private Color startColor = Color.white;
+    private Color startOutlineColor;
+    private Color startShadowColor;
+    private Vector2 startOutlineDistance;
+    private Vector2 startShadowDistance;
+    private bool startOutlineEnabled;
+    private bool startShadowEnabled;
     private bool isHovering;
     private float horizontalOffset;
     private float verticalOffset;
@@ -43,6 +50,7 @@ public class MenuButtonFloatEffect : MonoBehaviour, IPointerEnterHandler, IPoint
     {
         rectTransform = GetComponent<RectTransform>();
         targetGraphic = GetComponent<Graphic>();
+        selectable = GetComponent<Selectable>();
 
         if (targetGraphic == null)
         {
@@ -69,20 +77,12 @@ public class MenuButtonFloatEffect : MonoBehaviour, IPointerEnterHandler, IPoint
             rectTransform = GetComponent<RectTransform>();
         }
 
-        startAnchoredPosition = rectTransform.anchoredPosition;
-        startScale = rectTransform.localScale;
-        startRotation = rectTransform.localRotation;
+        CacheBaseline();
         horizontalOffset = Random.Range(0f, Mathf.PI * 2f);
         verticalOffset = Random.Range(0f, Mathf.PI * 2f);
         isHovering = false;
         hoverAmount = 0f;
         hoverPunch = 0f;
-
-        if (targetGraphic != null)
-        {
-            startColor = targetGraphic.color;
-        }
-
         SetEffectAlpha(0f);
     }
 
@@ -100,11 +100,21 @@ public class MenuButtonFloatEffect : MonoBehaviour, IPointerEnterHandler, IPoint
             targetGraphic.color = startColor;
         }
 
-        SetEffectAlpha(0f);
+        RestoreEffectState();
     }
 
     private void Update()
     {
+        if (selectable != null && !selectable.interactable)
+        {
+            isHovering = false;
+            hoverAmount = 0f;
+            hoverPunch = 0f;
+            ResetTransformToBaseline();
+            SetEffectAlpha(0f);
+            return;
+        }
+
         hoverAmount = Mathf.MoveTowards(
             hoverAmount,
             isHovering ? 1f : 0f,
@@ -149,6 +159,11 @@ public class MenuButtonFloatEffect : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (selectable != null && !selectable.interactable)
+        {
+            return;
+        }
+
         isHovering = true;
         hoverPunch = 1f;
     }
@@ -201,5 +216,68 @@ public class MenuButtonFloatEffect : MonoBehaviour, IPointerEnterHandler, IPoint
         }
 
         return null;
+    }
+
+    public void CacheBaseline()
+    {
+        if (rectTransform != null)
+        {
+            startAnchoredPosition = rectTransform.anchoredPosition;
+            startScale = rectTransform.localScale;
+            startRotation = rectTransform.localRotation;
+        }
+
+        if (targetGraphic != null)
+        {
+            startColor = targetGraphic.color;
+        }
+
+        CacheEffectState();
+    }
+
+    private void ResetTransformToBaseline()
+    {
+        if (rectTransform == null)
+        {
+            return;
+        }
+
+        rectTransform.anchoredPosition = startAnchoredPosition;
+        rectTransform.localScale = startScale;
+        rectTransform.localRotation = startRotation;
+    }
+
+    private void CacheEffectState()
+    {
+        if (hoverOutline != null)
+        {
+            startOutlineColor = hoverOutline.effectColor;
+            startOutlineDistance = hoverOutline.effectDistance;
+            startOutlineEnabled = hoverOutline.enabled;
+        }
+
+        if (hoverShadow != null)
+        {
+            startShadowColor = hoverShadow.effectColor;
+            startShadowDistance = hoverShadow.effectDistance;
+            startShadowEnabled = hoverShadow.enabled;
+        }
+    }
+
+    private void RestoreEffectState()
+    {
+        if (hoverOutline != null)
+        {
+            hoverOutline.effectColor = startOutlineColor;
+            hoverOutline.effectDistance = startOutlineDistance;
+            hoverOutline.enabled = startOutlineEnabled;
+        }
+
+        if (hoverShadow != null)
+        {
+            hoverShadow.effectColor = startShadowColor;
+            hoverShadow.effectDistance = startShadowDistance;
+            hoverShadow.enabled = startShadowEnabled;
+        }
     }
 }

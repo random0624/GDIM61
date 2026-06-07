@@ -16,10 +16,7 @@ public class FuelUI : MonoBehaviour
     private void Awake()
     {
         originalScale = transform.localScale;
-        if (fuelSlider != null)
-        {
-            fuelSlider.interactable = false;
-        }
+        fuelSlider.interactable = false;
     }
 
     private void OnEnable()
@@ -69,19 +66,19 @@ public class FuelUI : MonoBehaviour
             fuelSlider.value = Mathf.MoveTowards(
                 fuelSlider.value,
                 targetFuelValue,
-                fuelSlider.maxValue * Time.unscaledDeltaTime / duration
+                fuelSlider.maxValue * Time.deltaTime / duration
             );
         }
 
         float fuelPercent = fuelSlider.value / fuelSlider.maxValue;
         if (fuelPercent <= lowFuelPercent)
         {
-            float pulse = (Mathf.Sin(Time.unscaledTime * lowPulseSpeed) + 1f) * 0.5f;
+            float pulse = (Mathf.Sin(Time.time * lowPulseSpeed) + 1f) * 0.5f;
             transform.localScale = Vector3.Lerp(originalScale, originalScale * lowPulseScale, pulse);
         }
         else
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, originalScale, Time.unscaledDeltaTime * lowPulseSpeed);
+            transform.localScale = Vector3.Lerp(transform.localScale, originalScale, Time.deltaTime * lowPulseSpeed);
         }
     }
 

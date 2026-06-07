@@ -26,10 +26,7 @@ public class IntegrityUI : MonoBehaviour
     {
         originalScale = transform.localScale;
         originalLocalPosition = transform.localPosition;
-        if (integritySlider != null)
-        {
-            integritySlider.interactable = false;
-        }
+        integritySlider.interactable = false;
     }
 
     private void OnEnable()
@@ -91,12 +88,12 @@ public class IntegrityUI : MonoBehaviour
         float integrityPercent = integritySlider.value / integritySlider.maxValue;
         if (integrityPercent <= lowIntegrityPercent)
         {
-            float pulse = (Mathf.Sin(Time.unscaledTime * lowPulseSpeed) + 1f) * 0.5f;
+            float pulse = (Mathf.Sin(Time.time * lowPulseSpeed) + 1f) * 0.5f;
             transform.localScale = Vector3.Lerp(originalScale, originalScale * lowPulseScale, pulse);
         }
         else
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, originalScale, Time.unscaledDeltaTime * lowPulseSpeed);
+            transform.localScale = Vector3.Lerp(transform.localScale, originalScale, Time.deltaTime * lowPulseSpeed);
         }
     }
 
@@ -156,7 +153,7 @@ public class IntegrityUI : MonoBehaviour
             float progress = Mathf.Clamp01(elapsed / duration);
             integritySlider.value = Mathf.Lerp(startValue, targetValue, progress);
 
-            elapsed += Time.unscaledDeltaTime;
+            elapsed += Time.deltaTime;
             yield return null;
         }
 
@@ -178,7 +175,7 @@ public class IntegrityUI : MonoBehaviour
             transform.localPosition = originalLocalPosition + new Vector3(xOffset, 0f, 0f);
             SetFillColor(Color.Lerp(originalFillColor, hitFlashColor, intensity));
 
-            elapsed += Time.unscaledDeltaTime;
+            elapsed += Time.deltaTime;
             yield return null;
         }
 

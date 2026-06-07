@@ -20,9 +20,8 @@ public class InGameMenu : MonoBehaviour
     [SerializeField] private GameObject shopPanel;
 
     private bool openedFromMainMenu;
-    private bool listenersRegistered;
 
-    private void OnEnable()
+    private void Start()
     {
         if (GameController.Instance != null)
         {
@@ -30,35 +29,22 @@ public class InGameMenu : MonoBehaviour
             GameController.Instance.OnMainMenuStarted += MainMenuDisplay;
         }
 
-        RegisterButtonListeners();
-    }
-
-    private void Start()
-    {
-        if (nextRegionButton != null)
-        {
-            nextRegionButton.interactable = false;
-        }
+        nextRegionButton.interactable = false ;
 
         MainMenuDisplay();
+
+        sailButton.onClick.AddListener(OnSailButtonClicked);
+        paintButton.onClick.AddListener(OnPaintButtonClicked);
+        quitButton.onClick.AddListener(OnQuitButtonClicked);
+        shopButton.onClick.AddListener(OnShopButtonClicked);
+        closeCanvasButton.onClick.AddListener(OnCloseCanvasButtonClicked);
+        closeShopButton.onClick.AddListener(OnCloseShopButtonClicked);
+        nextRegionButton.onClick.AddListener(NextLevel);
 
         AddFloatEffect(sailButton);
         AddFloatEffect(paintButton);
         AddFloatEffect(quitButton);
-        AddFloatEffect(shopButton);
-        AddFloatEffect(nextRegionButton);
         AddFloatEffect(closeCanvasButton);
-        AddFloatEffect(closeShopButton);
-    }
-
-    private void OnDisable()
-    {
-        if (GameController.Instance != null)
-        {
-            GameController.Instance.OnMainMenuStarted -= MainMenuDisplay;
-        }
-
-        UnregisterButtonListeners();
     }
 
     private void Update()
@@ -73,11 +59,8 @@ public class InGameMenu : MonoBehaviour
 
         if (Sticker.Instance.isWin)
         {
-            if (nextRegionButton != null && !nextRegionButton.interactable)
-            {
-                nextRegionButton.interactable = true;
-                Debug.Log("Win");
-            }
+            nextRegionButton.interactable = true;
+            Debug.Log("Win");
         }
     }
 
@@ -128,11 +111,6 @@ public class InGameMenu : MonoBehaviour
     }
     private void OpenPaintFromSailing()
     {
-        if (drawingCanvas == null)
-        {
-            return;
-        }
-
         if (drawingCanvas.gameObject.activeSelf)
             return;
 
@@ -150,14 +128,14 @@ public class InGameMenu : MonoBehaviour
 
     private void OpenCanvas()
     {
-        SetObjectActive(drawingCanvas != null ? drawingCanvas.gameObject : null, true);
-        SetButtonActive(closeCanvasButton, true);
+        drawingCanvas.gameObject.SetActive(true);
+        closeCanvasButton.gameObject.SetActive(true);
     }
 
     private void OnCloseCanvasButtonClicked()
     {
-        SetObjectActive(drawingCanvas != null ? drawingCanvas.gameObject : null, false);
-        SetButtonActive(closeCanvasButton, false);
+        drawingCanvas.gameObject.SetActive(false);
+        closeCanvasButton.gameObject.SetActive(false);
 
         if (openedFromMainMenu)
         {
@@ -168,6 +146,7 @@ public class InGameMenu : MonoBehaviour
                 GameController.Instance.StartMainMenu();
             }
         }
+        // ´Ó Sailing ESC ´ò¿ª
         else
         {
             MainMenuHide();
@@ -181,23 +160,23 @@ public class InGameMenu : MonoBehaviour
 
     private void MainMenuDisplay()
     {
-        SetButtonActive(sailButton, true);
-        SetButtonActive(paintButton, true);
-        SetButtonActive(quitButton, true);
-        SetButtonActive(shopButton, true);
-        SetButtonActive(nextRegionButton, true);
-        SetObjectActive(drawingCanvas != null ? drawingCanvas.gameObject : null, false);
-        SetButtonActive(closeCanvasButton, false);
-        SetObjectActive(shopPanel, false);
+        sailButton.gameObject.SetActive(true);
+        paintButton.gameObject.SetActive(true);
+        quitButton.gameObject.SetActive(true);
+        shopButton.gameObject.SetActive(true);
+        nextRegionButton.gameObject.SetActive(true);
+        drawingCanvas.gameObject.SetActive(false);
+        closeCanvasButton.gameObject.SetActive(false);
+        shopPanel.gameObject.SetActive(false);
     }
 
     private void MainMenuHide()
     {
-        SetButtonActive(sailButton, false);
-        SetButtonActive(paintButton, false);
-        SetButtonActive(quitButton, false);
-        SetButtonActive(shopButton, false);
-        SetButtonActive(nextRegionButton, false);
+        sailButton.gameObject.SetActive(false);
+        paintButton.gameObject.SetActive(false);
+        quitButton.gameObject.SetActive(false);
+        shopButton.gameObject.SetActive(false);
+        nextRegionButton.gameObject.SetActive(false);
     }
 
     private void AddFloatEffect(Button button)
@@ -211,7 +190,7 @@ public class InGameMenu : MonoBehaviour
 
     private void OnShopButtonClicked()
     {
-        SetObjectActive(shopPanel, true);
+        shopPanel.SetActive(true);
         MainMenuHide();
     }
     private void OnCloseShopButtonClicked()
@@ -231,75 +210,6 @@ public class InGameMenu : MonoBehaviour
         else
         {
             Debug.Log("No more levels!");
-        }
-    }
-
-    private void RegisterButtonListeners()
-    {
-        if (listenersRegistered)
-        {
-            return;
-        }
-
-        AddListener(sailButton, OnSailButtonClicked);
-        AddListener(paintButton, OnPaintButtonClicked);
-        AddListener(quitButton, OnQuitButtonClicked);
-        AddListener(shopButton, OnShopButtonClicked);
-        AddListener(closeCanvasButton, OnCloseCanvasButtonClicked);
-        AddListener(closeShopButton, OnCloseShopButtonClicked);
-        AddListener(nextRegionButton, NextLevel);
-        listenersRegistered = true;
-    }
-
-    private void UnregisterButtonListeners()
-    {
-        if (!listenersRegistered)
-        {
-            return;
-        }
-
-        RemoveListener(sailButton, OnSailButtonClicked);
-        RemoveListener(paintButton, OnPaintButtonClicked);
-        RemoveListener(quitButton, OnQuitButtonClicked);
-        RemoveListener(shopButton, OnShopButtonClicked);
-        RemoveListener(closeCanvasButton, OnCloseCanvasButtonClicked);
-        RemoveListener(closeShopButton, OnCloseShopButtonClicked);
-        RemoveListener(nextRegionButton, NextLevel);
-        listenersRegistered = false;
-    }
-
-    private void AddListener(Button button, UnityEngine.Events.UnityAction action)
-    {
-        if (button == null)
-        {
-            return;
-        }
-
-        button.onClick.RemoveListener(action);
-        button.onClick.AddListener(action);
-    }
-
-    private void RemoveListener(Button button, UnityEngine.Events.UnityAction action)
-    {
-        if (button != null)
-        {
-            button.onClick.RemoveListener(action);
-        }
-    }
-
-    private void SetButtonActive(Button button, bool active)
-    {
-        if (button != null)
-        {
-            button.gameObject.SetActive(active);
-        }
-    }
-
-    private void SetObjectActive(GameObject target, bool active)
-    {
-        if (target != null)
-        {
-            target.SetActive(active);
         }
     }
 }

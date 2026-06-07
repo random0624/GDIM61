@@ -37,6 +37,7 @@ public class CollectibleManager : MonoBehaviour
         UpdateUI();
     }
 
+    // 加箱子
     public void AddChest(int amount = 1)
     {
         currentChestCount += amount;
@@ -54,6 +55,7 @@ public class CollectibleManager : MonoBehaviour
         SaveChest();
     }
 
+    // 消耗箱子
     public bool UseChest(int amount = 1)
     {
         if (currentChestCount < amount)
@@ -76,6 +78,7 @@ public class CollectibleManager : MonoBehaviour
         return true;
     }
 
+    // 重置
     public void ResetChest()
     {
         currentChestCount = 0;
@@ -90,10 +93,6 @@ public class CollectibleManager : MonoBehaviour
         if (chestText != null)
         {
             chestText.text = "Chest: " + currentChestCount;
-        }
-
-        if (inshopchestText != null)
-        {
             inshopchestText.text = "Chest: " + currentChestCount;
         }
     }

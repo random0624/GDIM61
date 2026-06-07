@@ -35,11 +35,8 @@ public class QuestUI : MonoBehaviour{
     }
 
     public void Start(){
-        if (testQuest != null)
-        {
-            for(int i = 0; i < testQuestAmount; i++){
-                testQuests.Add(new QuestProgress(testQuest));
-            }
+        for(int i = 0; i < testQuestAmount; i++){
+            testQuests.Add(new QuestProgress(testQuest));
         }
         SyncQuestUIVisibility();
         UpdateQuestUI();
@@ -114,13 +111,6 @@ public class QuestUI : MonoBehaviour{
     }
 
     public void UpdateQuestUI(){
-        if (questListContent == null ||
-            questEntryPrefab == null ||
-            objectiveTextPrefab == null)
-        {
-            return;
-        }
-
         //Destroy existing quest entries
         foreach(Transform child in questListContent){
             Destroy(child.gameObject);
@@ -128,27 +118,15 @@ public class QuestUI : MonoBehaviour{
         //Create new quest entries
         foreach(var quest in testQuests){
             GameObject entry = Instantiate(questEntryPrefab, questListContent);
-            Transform questNameTransform = entry.transform.Find("QuestNameText");
+            TMP_Text questNameText = entry.transform.Find("QuestNameText").GetComponent<TMP_Text>();
             Transform objectiveList = entry.transform.Find("ObjectiveList");
 
-            if (questNameTransform == null || objectiveList == null)
-            {
-                continue;
-            }
-
-            TMP_Text questNameText = questNameTransform.GetComponent<TMP_Text>();
-            if (questNameText != null)
-            {
-                questNameText.text = quest.quest.questName;
-            }
+            questNameText.text = quest.quest.questName;
 
             foreach(var objective in quest.objectives){
                 GameObject objTEXTGO = Instantiate(objectiveTextPrefab, objectiveList);
                 TMP_Text objText = objTEXTGO.GetComponent<TMP_Text>();
-                if (objText != null)
-                {
-                    objText.text = $"{objective.description} ({objective.currentAmount}/{objective.requiredAmount})";
-                }
+                objText.text = $"{objective.description} ({objective.currentAmount}/{objective.requiredAmount})"; //Collect Treasure chest amt...
 
                 TMPCollectPopFeedback popFeedback = objTEXTGO.GetComponent<TMPCollectPopFeedback>();
                 if (popFeedback != null &&
@@ -162,3 +140,4 @@ public class QuestUI : MonoBehaviour{
         pendingObjectivePops.Clear();
     }
 }
+

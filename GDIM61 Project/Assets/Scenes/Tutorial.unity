@@ -19237,10 +19237,10 @@ MonoBehaviour:
   waterSplashClip: {fileID: 8300000, guid: a76595cb6c1c249669296724733f344e, type: 3}
   velocityThreshold: 1
   stopHysteresis: 0.85
-  volume: 0.15
+  volume: 0.1
   scaleVolumeWithSpeed: 1
   maxSpeedForFullVolume: 4
-  minVolumeWhenPlaying: 0.08
+  minVolumeWhenPlaying: 0.05
   splashAudioSource: {fileID: 0}
 --- !u!1001 &1393519416
 PrefabInstance:
